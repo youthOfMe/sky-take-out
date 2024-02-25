@@ -6,3 +6,8 @@ sky:
     database: sky_take_out_v
     username: root
     password: 123456
+  alioss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: LTAI5t9rtsgDJPhQCUJsFMHK
+    access-key-secret: E7ppZWhifDhXUzdKRM1I2LNyfZgqVA
+    bucket-name: chenhai-misty-rain-test
