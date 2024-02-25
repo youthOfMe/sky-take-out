@@ -26,6 +26,7 @@
         order by d.create_time desc
     </select>
 
+    <!--  动态条件查询菜品  -->
     <select id="list" resultType="Dish" parameterType="Dish">
         select * from dish
         <where>

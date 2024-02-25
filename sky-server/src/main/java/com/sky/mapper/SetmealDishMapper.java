@@ -9,12 +9,10 @@ import java.util.List;
 @Mapper
 public interface SetmealDishMapper {
     /**
-     * 根据菜品id查询对应的套餐id
-     *
+     * 根据菜品id查询套餐id
      * @param dishIds
      * @return
      */
-    //select setmeal_id from setmeal_dish where dish_id in (1,2,3,4)
     List<Long> getSetmealIdsByDishIds(List<Long> dishIds);
 
     /**
@@ -31,4 +29,6 @@ public interface SetmealDishMapper {
      */
     @Delete("delete from setmeal_dish where setmeal_id = #{setmealId}")
     void deleteBySetmealId(Long setmealId);
+
+
 }
