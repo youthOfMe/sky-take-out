@@ -26,6 +26,22 @@
         order by d.create_time desc
     </select>
 
+    <!-- 根据ID动态修改菜品数据  -->
+    <update id="update">
+        update dish
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+        </set>
+        where id = #{id}
+    </update>
+
     <!--  动态条件查询菜品  -->
     <select id="list" resultType="Dish" parameterType="Dish">
         select * from dish
