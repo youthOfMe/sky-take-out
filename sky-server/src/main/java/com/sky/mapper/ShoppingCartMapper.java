@@ -19,10 +19,10 @@ public interface ShoppingCartMapper {
 
     /**
      * 根据id修改商品数量
-     * @param cart
+     * @param shoppingCart
      */
     @Update("update shopping_cart set number = #{number} where id = #{id}")
-    void updateNumberById(ShoppingCart cart);
+    void updateNumberById(ShoppingCart shoppingCart);
 
     /**
      * 进行插入新数据到购物车中
