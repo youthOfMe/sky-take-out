@@ -19,4 +19,20 @@
             </if>
         </where>
     </select>
+
+    <!--  根据dish_id/setmeal_id删除数据  -->
+    <delete id="deleteByDishOrSetmealId">
+        delete from shopping_cart
+        <where>
+            <if test="dishId != null">
+                and dish_id = #{dishId}
+            </if>
+            <if test="dishFlavor != null">
+                and dish_flavor = #{dishFlavor}
+            </if>
+            <if test="setmealId != null">
+                and setmeal_id = #{setmealId}
+            </if>
+        </where>
+    </delete>
 </mapper>

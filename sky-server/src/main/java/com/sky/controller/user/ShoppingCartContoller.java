@@ -54,4 +54,15 @@ public class ShoppingCartContoller {
         shoppingCartService.cleanShoppingCart();
         return Result.success();
     }
+
+    /**
+     * 减少/删除购物车中的菜品数据
+     * @param shoppingCartDTO
+     * @return
+     */
+    @PostMapping("/sub")
+    public Result sub(@RequestBody ShoppingCartDTO shoppingCartDTO) {
+        shoppingCartService.subShoppingCart(shoppingCartDTO);
+        return Result.success();
+    }
 }

@@ -1,10 +1,12 @@
 package com.sky.service.impl;
 
+import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.ShoppingCartDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.ShoppingCart;
+import com.sky.exception.ShoppingCartSubException;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.mapper.ShoppingCartMapper;
@@ -98,5 +100,36 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         // 获取到当前微信用户的ID
         Long userId = BaseContext.getCurrentId();
         shoppingCartMapper.deleteByUserId(userId);
+    }
+
+    /**
+     * 减少/删除购物车中的菜品数据
+     * @param shoppingCartDTO
+     */
+    @Override
+    public void subShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+        /**
+         * 两种情况
+         *  1. 菜品/套餐数量大于1 -> 修改数量
+         *  2. 菜品/套餐数量小于1 -> 删除菜品/套餐购物车数据
+         */
+        ShoppingCart shoppingCart = new ShoppingCart();
+        BeanUtils.copyProperties(shoppingCartDTO, shoppingCart);
+        Long userId = BaseContext.getCurrentId();
+        shoppingCart.setUserId(userId);
+
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+
+        // 处理数据为空的现象
+        if (list == null) {
+            throw new ShoppingCartSubException(MessageConstant.SHOP_CART_NOT_FOUND);
+        }
+        ShoppingCart cart = list.get(0);
+        if (cart.getNumber() > 1) {
+            cart.setNumber(cart.getNumber() - 1);
+            shoppingCartMapper.updateNumberById(cart);
+        } else {
+            shoppingCartMapper.deleteByDishOrSetmealId(shoppingCart);
+        }
     }
 }
