@@ -3,6 +3,7 @@ package com.sky.mapper;
 import com.sky.entity.AddressBook;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -26,4 +27,11 @@ public interface AddressBookMapper {
             "#{city_name}, #{district_code}, #{district_name}, #{detail}, #{label}, #{is_default})")
     void insert(AddressBook addressBook);
 
+    /**
+     * 根据ID查询
+     * @param id
+     * @return
+     */
+    @Select("select * from address_book where id = #{id}")
+    AddressBook getById(Long id);
 }

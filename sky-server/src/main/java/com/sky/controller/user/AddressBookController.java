@@ -43,4 +43,14 @@ public class AddressBookController {
         addressBookService.save(addressBook);
         return Result.success();
     }
+
+    /**
+     * 根据id查询地址
+     * @param id
+     * @return
+     */
+    public Result<AddressBook> getById(@PathVariable Long id) {
+        AddressBook addressBook = addressBookService.getById(id);
+        return Result.success(addressBook);
+    }
 }
