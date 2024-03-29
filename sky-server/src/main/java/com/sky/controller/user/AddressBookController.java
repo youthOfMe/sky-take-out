@@ -65,4 +65,16 @@ public class AddressBookController {
         addressBookService.update(addressBook);
         return Result.success();
     }
+
+    /**
+     * 设置默认地址
+     * @param addressBook
+     * @return
+     */
+    @PutMapping("/default")
+    @ApiOperation("设置默认地址")
+    public Result setDefault(@RequestBody AddressBook addressBook) {
+        addressBookService.setDefault(addressBook);
+        return Result.success();
+    }
 }
