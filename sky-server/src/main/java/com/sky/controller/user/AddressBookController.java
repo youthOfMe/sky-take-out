@@ -53,4 +53,16 @@ public class AddressBookController {
         AddressBook addressBook = addressBookService.getById(id);
         return Result.success(addressBook);
     }
+
+    /**
+     * 根据id修改地址
+     * @param addressBook
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("根据id修改地址")
+    public Result update(@RequestBody AddressBook addressBook) {
+        addressBookService.update(addressBook);
+        return Result.success();
+    }
 }
