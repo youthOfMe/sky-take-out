@@ -45,4 +45,10 @@ public interface ShoppingCartMapper {
      * @param shoppingCart
      */
     void deleteByDishOrSetmealId(ShoppingCart shoppingCart);
+
+    /**
+     * 再来一单
+     * @param shoppingCartList
+     */
+    void insertBatch(List<ShoppingCart> shoppingCartList);
 }
