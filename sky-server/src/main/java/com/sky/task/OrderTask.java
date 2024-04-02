@@ -40,4 +40,23 @@ public class OrderTask {
             }
         }
     }
+
+    /**
+     * 处理一直处于派送中状态的订单
+     */
+    @Scheduled(cron = "0 0 1 * * ?")
+    public void processDeliveryOrder() {
+        log.info("定时处理处于派送中的订单: {}", LocalDateTime.now());
+
+        LocalDateTime time = LocalDateTime.now().plusMinutes(-60);
+
+        List<Orders> ordersList = orderMapper.getByStatusAndOrderTimeLT(Orders.DELIVERY_IN_PROGRESS, time);
+
+        if (ordersList != null && ordersList.size() > 0) {
+            for (Orders orders : ordersList) {
+                orders.setStatus(Orders.CANCELLED);
+                orderMapper.update(orders);
+            }
+        }
+    }
 }
