@@ -7,7 +7,7 @@ import com.sky.vo.SetmealOverViewVO;
 
 import java.time.LocalDateTime;
 
-public interface WorkspaceSevice {
+public interface WorkspaceService {
     /**
      * 根据时间段统计营业数据
      * @param begin

@@ -1,7 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.result.Result;
-import com.sky.service.WorkspaceSevice;
+import com.sky.service.WorkspaceService;
 import com.sky.vo.BusinessDataVO;
 import com.sky.vo.DishOverViewVO;
 import com.sky.vo.OrderOverViewVO;
@@ -27,7 +27,7 @@ import java.time.LocalTime;
 public class WorkSpaceController {
 
     @Autowired
-    private WorkspaceSevice workspaceSevice;
+    private WorkspaceService workspaceSevice;
 
     @GetMapping("/businessData")
     @ApiOperation("工作台今日数据查询")

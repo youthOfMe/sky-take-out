@@ -6,7 +6,7 @@ import com.sky.mapper.DishMapper;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.mapper.UserMapper;
-import com.sky.service.WorkspaceSevice;
+import com.sky.service.WorkspaceService;
 import com.sky.vo.BusinessDataVO;
 import com.sky.vo.DishOverViewVO;
 import com.sky.vo.OrderOverViewVO;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 @Service
 @Slf4j
-public class WorkspaceServieImpl implements WorkspaceSevice {
+public class WorkspaceServieImpl implements WorkspaceService {
 
     @Autowired
     private OrderMapper orderMapper;
