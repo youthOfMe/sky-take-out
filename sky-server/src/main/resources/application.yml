@@ -53,6 +53,11 @@ sky:
   wechat:
     appid: ${sky.wechat.appid}
     secret: ${sky.wechat.secret}
+  sms:
+    signName: ${sky.sms.signName}
+    templateCode: ${sky.sms.templateCode}
+    accessKey: ${sky.sms.accessKey}
+    secret: ${sky.sms.secret}
 mybatis-plus:
   global-config:
     db-config:

@@ -11,6 +11,11 @@ sky:
     access-key-id: LTAI5t9rtsgDJPhQCUJsFMHK
     access-key-secret: E7ppZWhifDhXUzdKRM1I2LNyfZgqVA
     bucket-name: chenhai-misty-rain-test
+  sms:
+    signName: 辰海烟雨
+    templateCode: SMS_465424205
+    accessKey: LTAI5t9dA3rBYjNab2fWpNoS
+    secret: Lq05E1PduhjsL8kb26hIzJqqQ7yB04
   redis:
     host: localhost
     port: 6378
