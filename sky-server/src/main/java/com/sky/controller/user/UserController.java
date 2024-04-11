@@ -2,6 +2,7 @@ package com.sky.controller.user;
 
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.UserAccountLoginDTO;
+import com.sky.dto.UserRegisterDTO;
 import com.sky.entity.User;
 import com.sky.properties.JwtProperties;
 import com.sky.result.Result;
@@ -53,6 +54,18 @@ public class UserController {
     //     return Result.success(userLoginVO);
     // }
 
+
+
+
+    public Result register(@RequestBody UserRegisterDTO userRegisterDTO) {
+
+    }
+
+    /**
+     * 账号登录
+     * @param userAccountLoginDTO
+     * @return
+     */
     @PostMapping("/accountLogin")
     @ApiOperation("账号登录")
     public Result<UserAccountLoginVO> login(@RequestBody UserAccountLoginDTO userAccountLoginDTO) {
@@ -75,5 +88,7 @@ public class UserController {
 
         return Result.success(userAccountLoginVO);
     }
+
+
 
 }
