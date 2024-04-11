@@ -2,9 +2,12 @@ package com.sky.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sky.constant.MessageConstant;
+import com.sky.dto.UserAccountLoginDTO;
 import com.sky.dto.UserLoginDTO;
 import com.sky.entity.User;
+import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.LoginFailedException;
 import com.sky.mapper.UserMapper;
 import com.sky.properties.WeChatProperties;
@@ -68,6 +71,24 @@ public class UserServiceImpl implements UserService {
         String openid = jsonObject.getString("openid");
 
         return openid;
+    }
 
+    /**
+     * 账号登录
+     * @param userAccountLoginDTO
+     * @return
+     */
+    public User accountLogin(UserAccountLoginDTO userAccountLoginDTO) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("account", userAccountLoginDTO.getAccount());
+        queryWrapper.eq("password", userAccountLoginDTO.getPassword());
+
+        User user = userMapper.selectOne(queryWrapper);
+
+        if (user == null) {
+            throw new AccountNotFoundException("未找到该账号");
+        }
+
+        return user;
     }
 }

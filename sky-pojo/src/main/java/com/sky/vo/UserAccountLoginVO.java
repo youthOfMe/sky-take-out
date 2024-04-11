@@ -1,16 +1,17 @@
-package com.sky.dto;
-
+package com.sky.vo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccountLoginDTO {
-    private String account;
+public class UserAccountLoginVO implements Serializable {
 
-    private String password;
+    private Long id;
+    private String token;
 }

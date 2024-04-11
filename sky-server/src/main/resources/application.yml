@@ -53,3 +53,8 @@ sky:
   wechat:
     appid: ${sky.wechat.appid}
     secret: ${sky.wechat.secret}
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tb_   # 表名前缀
+      id-type: assign_id   # 雪花算法生成ID

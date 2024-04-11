@@ -1,5 +1,6 @@
 package com.sky.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.sky.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -7,7 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import java.util.Map;
 
 @Mapper
-public interface UserMapper {
+public interface UserMapper extends BaseMapper<User> {
 
     /**
 * 根据openid查询用户
@@ -21,7 +22,7 @@ public interface UserMapper {
      * 插入数据
      * @param user
      */
-    void insert(User user);
+    // void insertUser(User user);
 
     /**
      * 根据用户Id查询用户数据
