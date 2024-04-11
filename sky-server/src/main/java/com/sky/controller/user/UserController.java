@@ -8,7 +8,7 @@ import com.sky.properties.JwtProperties;
 import com.sky.result.Result;
 import com.sky.service.UserService;
 import com.sky.utils.JwtUtil;
-import com.sky.vo.UserAccountLoginVO;
+import com.sky.vo.UserAccountLoginOrRegisterVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -55,20 +55,42 @@ public class UserController {
     // }
 
 
+    /**
+     * 账号注册
+     * @param userRegisterDTO
+     * @return
+     */
+    @PostMapping("/register")
+    public Result<UserAccountLoginOrRegisterVO> register(@RequestBody UserRegisterDTO userRegisterDTO) throws Exception {
+        log.info("用户注册: {}", userRegisterDTO);
+
+        // 用户注册
+        Integer userId = userService.register(userRegisterDTO);
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(JwtClaimsConstant.USER_ID, userId);
+        String token = JwtUtil.createJWT(
+                jwtProperties.getUserSecretKey(),
+                jwtProperties.getUserTtl(),
+                claims);
 
 
-    public Result register(@RequestBody UserRegisterDTO userRegisterDTO) {
+        UserAccountLoginOrRegisterVO userAccountLoginVO = UserAccountLoginOrRegisterVO.builder()
+                .id(Long.valueOf(userId))
+                .token(token)
+                .build();
 
+        return Result.success(userAccountLoginVO);
     }
 
     /**
      * 账号登录
      * @param userAccountLoginDTO
-     * @return
+     * @return UserAccountLoginOrRegisterVO
      */
     @PostMapping("/accountLogin")
     @ApiOperation("账号登录")
-    public Result<UserAccountLoginVO> login(@RequestBody UserAccountLoginDTO userAccountLoginDTO) {
+    public Result<UserAccountLoginOrRegisterVO> login(@RequestBody UserAccountLoginDTO userAccountLoginDTO) {
         log.info("员工登录: {}", userAccountLoginDTO);
 
         // 账号登录
@@ -81,7 +103,7 @@ public class UserController {
                 jwtProperties.getUserTtl(),
                 claims);
 
-        UserAccountLoginVO userAccountLoginVO = UserAccountLoginVO.builder()
+        UserAccountLoginOrRegisterVO userAccountLoginVO = UserAccountLoginOrRegisterVO.builder()
                 .id(user.getId())
                 .token(token)
                 .build();

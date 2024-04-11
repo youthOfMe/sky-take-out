@@ -44,4 +44,7 @@ public class User implements Serializable {
 
     //注册时间
     private LocalDateTime createTime;
+
+    // 更新时间
+    private LocalDateTime updateTime;
 }

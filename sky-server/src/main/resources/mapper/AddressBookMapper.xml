@@ -18,7 +18,7 @@
     </select>
 
 <!--  根据字段修改地址数据  -->
-    <update id="update" parameterType="addressBook">
+    <update id="update" parameterType="com.sky.entity.AddressBook">
         update address_book
         <set>
             <if test="consignee != null">

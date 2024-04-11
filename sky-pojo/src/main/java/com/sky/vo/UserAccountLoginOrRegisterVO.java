@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccountLoginVO implements Serializable {
+public class UserAccountLoginOrRegisterVO implements Serializable {
 
     private Long id;
     private String token;

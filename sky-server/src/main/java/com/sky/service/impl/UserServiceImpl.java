@@ -6,14 +6,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sky.constant.MessageConstant;
 import com.sky.dto.UserAccountLoginDTO;
 import com.sky.dto.UserLoginDTO;
+import com.sky.dto.UserRegisterDTO;
 import com.sky.entity.User;
+import com.sky.exception.AccountExisted;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.LoginFailedException;
+import com.sky.exception.PasswordNotFoundException;
 import com.sky.mapper.UserMapper;
 import com.sky.properties.WeChatProperties;
 import com.sky.service.UserService;
 import com.sky.utils.HttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -90,5 +94,35 @@ public class UserServiceImpl implements UserService {
         }
 
         return user;
+    }
+
+    /**
+     * 用户注册
+     * @param userRegisterDTO
+     * @return
+     */
+    public Integer register(UserRegisterDTO userRegisterDTO) {
+
+        if (userRegisterDTO.getAccount() == null) {
+            throw new AccountNotFoundException("账号不许为空");
+        }
+        if (userRegisterDTO.getPassword() == null) {
+            throw new PasswordNotFoundException("密码不许为空");
+        }
+
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("account", userRegisterDTO.getAccount());
+        User user = userMapper.selectOne(queryWrapper);
+        if (user != null) {
+            throw new AccountExisted("账号已存在");
+        }
+
+        user = new User();
+        BeanUtils.copyProperties(userRegisterDTO, user);
+        user.setCreateTime(LocalDateTime.now());
+        user.setUpdateTime(LocalDateTime.now());
+        Integer userId = userMapper.insert(user);
+
+        return userId;
     }
 }

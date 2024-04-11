@@ -56,5 +56,4 @@ sky:
 mybatis-plus:
   global-config:
     db-config:
-      table-prefix: tb_   # 表名前缀
       id-type: assign_id   # 雪花算法生成ID
