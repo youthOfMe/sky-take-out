@@ -4,6 +4,7 @@ import com.sky.dto.UserAccountLoginDTO;
 import com.sky.dto.UserLoginDTO;
 import com.sky.dto.UserRegisterDTO;
 import com.sky.entity.User;
+import com.sky.result.Result;
 
 public interface UserService {
 
@@ -26,4 +27,10 @@ public interface UserService {
      * @return
      */
     Integer register(UserRegisterDTO userRegisterDTO) throws Exception;
+
+    /**
+     * 发送验证码
+     * @param mobile
+     */
+    Result sendMsg(String mobile) throws Exception;
 }

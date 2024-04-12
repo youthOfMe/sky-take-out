@@ -14,13 +14,18 @@ import com.sky.exception.LoginFailedException;
 import com.sky.exception.PasswordNotFoundException;
 import com.sky.mapper.UserMapper;
 import com.sky.properties.WeChatProperties;
+import com.sky.result.Result;
 import com.sky.service.UserService;
+import com.sky.utils.AliSmsUtil;
 import com.sky.utils.HttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +42,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private AliSmsUtil aliSmsUtil;
 
     @Override
     public User wxLogin(UserLoginDTO userLoginDTO) {
@@ -124,5 +135,24 @@ public class UserServiceImpl implements UserService {
         Integer userId = userMapper.insert(user);
 
         return userId;
+    }
+
+    /**
+     * 发送验证码
+     * @param mobile
+     */
+    public Result sendMsg(String mobile) throws Exception {
+        // 1. 随机生成6位数字
+        String code = RandomStringUtils.randomNumeric(6);
+        String key = "CHECK_CODE" + mobile;
+        String value = (String) redisTemplate.opsForValue().get(key);
+        if (value != null) {
+            return Result.error("获取验证码太频繁了！！！");
+        }
+        // 2. 调用template对象, 发送手机对象
+        aliSmsUtil.sendSms(mobile, code);
+        // 3. 讲验证码存入到redis
+        redisTemplate.opsForValue().set("CHECK_CODE_" + mobile, code, Duration.ofMinutes(5));
+        return Result.success();
     }
 }
