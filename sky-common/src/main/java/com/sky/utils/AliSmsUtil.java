@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @AllArgsConstructor
 @Slf4j
-public class SmsUtil {
+public class AliSmsUtil {
 
     private String signName;
     private String templateCode;

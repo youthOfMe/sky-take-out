@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 @ConfigurationProperties(prefix = "sky.sms")
-public class SmsProperties {
+public class AliSmsProperties {
     private String signName;
     private String templateCode;
     private String accessKey;
