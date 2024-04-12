@@ -8,10 +8,7 @@ import com.sky.dto.UserAccountLoginDTO;
 import com.sky.dto.UserLoginDTO;
 import com.sky.dto.UserRegisterDTO;
 import com.sky.entity.User;
-import com.sky.exception.AccountExisted;
-import com.sky.exception.AccountNotFoundException;
-import com.sky.exception.LoginFailedException;
-import com.sky.exception.PasswordNotFoundException;
+import com.sky.exception.*;
 import com.sky.mapper.UserMapper;
 import com.sky.properties.WeChatProperties;
 import com.sky.result.Result;
@@ -20,6 +17,7 @@ import com.sky.utils.AliSmsUtil;
 import com.sky.utils.HttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -114,16 +112,40 @@ public class UserServiceImpl implements UserService {
      */
     public Integer register(UserRegisterDTO userRegisterDTO) {
 
-        if (userRegisterDTO.getAccount() == null) {
+        if (userRegisterDTO.getType() == 1 && userRegisterDTO.getAccount() == null) {
             throw new AccountNotFoundException("账号不许为空");
         }
-        if (userRegisterDTO.getPassword() == null) {
+        if (userRegisterDTO.getType() == 1 && userRegisterDTO.getPassword() == null) {
             throw new PasswordNotFoundException("密码不许为空");
         }
 
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("account", userRegisterDTO.getAccount());
-        User user = userMapper.selectOne(queryWrapper);
+        // 验证是否填写了手机号
+        if (userRegisterDTO.getType() == 2 && userRegisterDTO.getPhone() == null) {
+            throw new PhoneNotFoundException("手机号不许为空");
+        }
+        // 验证是否提交了验证码
+        if (userRegisterDTO.getType() == 2 && userRegisterDTO.getCode() == null) {
+            throw new VerifiCodeNotFoundException("请填写验证码");
+        }
+        // 验证验证码是否正确
+        if (userRegisterDTO.getType() == 2) {
+            String key = "CHECK_CODE" + userRegisterDTO.getPhone();
+            String value = (String) redisTemplate.opsForValue().get(key);
+            if (StringUtils.equals(value, userRegisterDTO.getCode())) {
+                throw new VerifiCodeNotFoundException("验证码输入不正确");
+            }
+        }
+        User user = null;
+        // 验证账号是否存在
+        if (userRegisterDTO.getType() == 2) {
+            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("phone", userRegisterDTO.getPhone());
+            user = userMapper.selectOne(queryWrapper);
+        } else if (userRegisterDTO.getType() == 1) {
+            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("account", userRegisterDTO.getAccount());
+            user = userMapper.selectOne(queryWrapper);
+        }
         if (user != null) {
             throw new AccountExisted("账号已存在");
         }
