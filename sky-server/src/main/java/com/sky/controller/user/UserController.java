@@ -1,7 +1,7 @@
 package com.sky.controller.user;
 
 import com.sky.constant.JwtClaimsConstant;
-import com.sky.dto.UserAccountLoginDTO;
+import com.sky.dto.UserAccountOrPhoneLoginDTO;
 import com.sky.dto.UserRegisterDTO;
 import com.sky.entity.User;
 import com.sky.properties.JwtProperties;
@@ -9,7 +9,7 @@ import com.sky.result.Result;
 import com.sky.service.UserService;
 import com.sky.utils.AliSmsUtil;
 import com.sky.utils.JwtUtil;
-import com.sky.vo.UserAccountLoginOrRegisterVO;
+import com.sky.vo.UserLoginOrRegisterVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +62,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/register")
-    public Result<UserAccountLoginOrRegisterVO> register(@RequestBody UserRegisterDTO userRegisterDTO) throws Exception {
+    public Result<UserLoginOrRegisterVO> register(@RequestBody UserRegisterDTO userRegisterDTO) throws Exception {
         log.info("用户注册: {}", userRegisterDTO);
 
         // 用户注册
@@ -76,7 +76,7 @@ public class UserController {
                 claims);
 
 
-        UserAccountLoginOrRegisterVO userAccountLoginVO = UserAccountLoginOrRegisterVO.builder()
+        UserLoginOrRegisterVO userAccountLoginVO = UserLoginOrRegisterVO.builder()
                 .id(Long.valueOf(userId))
                 .token(token)
                 .build();
@@ -100,13 +100,13 @@ public class UserController {
      * @param userAccountLoginDTO
      * @return UserAccountLoginOrRegisterVO
      */
-    @PostMapping("/accountLogin")
+    @PostMapping("/login")
     @ApiOperation("账号登录")
-    public Result<UserAccountLoginOrRegisterVO> login(@RequestBody UserAccountLoginDTO userAccountLoginDTO) {
-        log.info("员工登录: {}", userAccountLoginDTO);
+    public Result<UserLoginOrRegisterVO> login(@RequestBody UserAccountOrPhoneLoginDTO userAccountOrPhoneLoginDTO) {
+        log.info("员工登录: {}", userAccountOrPhoneLoginDTO);
 
         // 账号登录
-        User user = userService.accountLogin(userAccountLoginDTO);
+        User user = userService.accountOrPhoneLogin(userAccountOrPhoneLoginDTO);
 
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.USER_ID, user.getId());
@@ -115,7 +115,7 @@ public class UserController {
                 jwtProperties.getUserTtl(),
                 claims);
 
-        UserAccountLoginOrRegisterVO userAccountLoginVO = UserAccountLoginOrRegisterVO.builder()
+        UserLoginOrRegisterVO userAccountLoginVO = UserLoginOrRegisterVO.builder()
                 .id(user.getId())
                 .token(token)
                 .build();

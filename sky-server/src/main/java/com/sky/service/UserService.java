@@ -1,6 +1,6 @@
 package com.sky.service;
 
-import com.sky.dto.UserAccountLoginDTO;
+import com.sky.dto.UserAccountOrPhoneLoginDTO;
 import com.sky.dto.UserLoginDTO;
 import com.sky.dto.UserRegisterDTO;
 import com.sky.entity.User;
@@ -20,7 +20,7 @@ public interface UserService {
      * @param userAccountLoginDTO
      * @return
      */
-    User accountLogin(UserAccountLoginDTO userAccountLoginDTO);
+    User accountOrPhoneLogin(UserAccountOrPhoneLoginDTO userAccountOrPhoneLoginDTO);
 
     /**
      * 用户注册

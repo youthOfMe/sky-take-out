@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sky.constant.MessageConstant;
-import com.sky.dto.UserAccountLoginDTO;
+import com.sky.dto.UserAccountOrPhoneLoginDTO;
 import com.sky.dto.UserLoginDTO;
 import com.sky.dto.UserRegisterDTO;
 import com.sky.entity.User;
@@ -88,18 +88,47 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 账号登录
-     * @param userAccountLoginDTO
+     * @param userAccountOrPhoneLoginDTO
      * @return
      */
-    public User accountLogin(UserAccountLoginDTO userAccountLoginDTO) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("account", userAccountLoginDTO.getAccount());
-        queryWrapper.eq("password", userAccountLoginDTO.getPassword());
+    public User accountOrPhoneLogin(UserAccountOrPhoneLoginDTO userAccountOrPhoneLoginDTO) {
+        if (userAccountOrPhoneLoginDTO.getType() == 1 && userAccountOrPhoneLoginDTO.getAccount() == null) {
+            throw new AccountNotFoundException("账号不许为空");
+        }
+        if (userAccountOrPhoneLoginDTO.getType() == 1 && userAccountOrPhoneLoginDTO.getPassword() == null) {
+            throw new PasswordNotFoundException("密码不许为空");
+        }
+        // 验证是否填写了手机号
+        if (userAccountOrPhoneLoginDTO.getType() == 2 && userAccountOrPhoneLoginDTO.getPhone() == null) {
+            throw new PhoneNotFoundException("手机号不许为空");
+        }
+        // 验证是否提交了验证码
+        if (userAccountOrPhoneLoginDTO.getType() == 2 && userAccountOrPhoneLoginDTO.getCode() == null) {
+            throw new VerifiCodeNotFoundException("请填写验证码");
+        }
+        // 验证验证码是否正确
+        if (userAccountOrPhoneLoginDTO.getType() == 2) {
+            String key = "CHECK_CODE" + userAccountOrPhoneLoginDTO.getPhone();
+            String value = (String) redisTemplate.opsForValue().get(key);
+            if (!StringUtils.equals(value, userAccountOrPhoneLoginDTO.getCode())) {
+                throw new VerifiCodeNotFoundException("验证码输入不正确");
+            }
+        }
 
-        User user = userMapper.selectOne(queryWrapper);
-
+        User user = null;
+        // 验证账号是否存在
+        if (userAccountOrPhoneLoginDTO.getType() == 2) {
+            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("phone", userAccountOrPhoneLoginDTO.getPhone());
+            user = userMapper.selectOne(queryWrapper);
+        } else if (userAccountOrPhoneLoginDTO.getType() == 1) {
+            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("account", userAccountOrPhoneLoginDTO.getAccount());
+            queryWrapper.eq("password", userAccountOrPhoneLoginDTO.getPassword());
+            user = userMapper.selectOne(queryWrapper);
+        }
         if (user == null) {
-            throw new AccountNotFoundException("未找到该账号");
+            throw new AccountExisted("账号不存在");
         }
 
         return user;
@@ -131,7 +160,7 @@ public class UserServiceImpl implements UserService {
         if (userRegisterDTO.getType() == 2) {
             String key = "CHECK_CODE" + userRegisterDTO.getPhone();
             String value = (String) redisTemplate.opsForValue().get(key);
-            if (StringUtils.equals(value, userRegisterDTO.getCode())) {
+            if (!StringUtils.equals(value, userRegisterDTO.getCode())) {
                 throw new VerifiCodeNotFoundException("验证码输入不正确");
             }
         }
