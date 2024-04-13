@@ -17,7 +17,7 @@ public interface UserService {
 
     /**
      * 账号登录
-     * @param userAccountLoginDTO
+     * @param userAccountOrPhoneLoginDTO
      * @return
      */
     User accountOrPhoneLogin(UserAccountOrPhoneLoginDTO userAccountOrPhoneLoginDTO);

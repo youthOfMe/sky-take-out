@@ -97,7 +97,7 @@ public class UserController {
 
     /**
      * 账号登录
-     * @param userAccountLoginDTO
+     * @param userAccountOrPhoneLoginDTO
      * @return UserAccountLoginOrRegisterVO
      */
     @PostMapping("/login")
