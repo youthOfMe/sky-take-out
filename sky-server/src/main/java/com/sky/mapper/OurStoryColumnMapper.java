@@ -5,5 +5,5 @@ import com.sky.entity.OurStoryColumn;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface OurStoryMapper extends BaseMapper<OurStoryColumn> {
+public interface OurStoryColumnMapper extends BaseMapper<OurStoryColumn> {
 }
