@@ -87,4 +87,23 @@ public class AddressBookController {
         addressBookService.deleteById(id);
         return Result.success();
     }
+
+    /**
+     * 查询默认地址
+     */
+    @GetMapping("default")
+    @ApiOperation("查询默认地址")
+    public Result<AddressBook> getDefault() {
+        //SQL:select * from address_book where user_id = ? and is_default = 1
+        AddressBook addressBook = new AddressBook();
+        addressBook.setIsDefault(1);
+        addressBook.setUserId(BaseContext.getCurrentId());
+        List<AddressBook> list = addressBookService.list(addressBook);
+
+        if (list != null && list.size() == 1) {
+            return Result.success(list.get(0));
+        }
+
+        return Result.error("没有查询到默认地址");
+    }
 }

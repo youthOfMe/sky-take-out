@@ -47,4 +47,10 @@ public class User implements Serializable {
 
     // 更新时间
     private LocalDateTime updateTime;
+
+    // 用户签名
+    private String signature;
+
+    // 星海币
+    private Long xinghaibi;
 }

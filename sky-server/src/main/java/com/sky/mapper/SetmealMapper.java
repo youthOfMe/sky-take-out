@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface SetmealMapper {
+public interface SetmealMapper{
 
     /**
      * 根据分类id查询套餐的数量
