@@ -95,16 +95,12 @@ public class UserServiceImpl implements UserService {
         if (userAccountOrPhoneLoginDTO.getType() == 1 && userAccountOrPhoneLoginDTO.getAccount() == null) {
             throw new AccountNotFoundException("账号不许为空");
         }
-        if (userAccountOrPhoneLoginDTO.getType() == 1 && userAccountOrPhoneLoginDTO.getPassword() == null) {
+        if (userAccountOrPhoneLoginDTO.getPassword() == null) {
             throw new PasswordNotFoundException("密码不许为空");
         }
         // 验证是否填写了手机号
         if (userAccountOrPhoneLoginDTO.getType() == 2 && userAccountOrPhoneLoginDTO.getPhone() == null) {
             throw new PhoneNotFoundException("手机号不许为空");
-        }
-        // 验证是否提交了验证码
-        if (userAccountOrPhoneLoginDTO.getType() == 2 && userAccountOrPhoneLoginDTO.getCode() == null) {
-            throw new VerifiCodeNotFoundException("请填写验证码");
         }
         // 验证验证码是否正确
         if (userAccountOrPhoneLoginDTO.getType() == 2) {
@@ -205,5 +201,23 @@ public class UserServiceImpl implements UserService {
         // 3. 讲验证码存入到redis
         redisTemplate.opsForValue().set("CHECK_CODE_" + mobile, code, Duration.ofMinutes(5));
         return Result.success();
+    }
+
+    /**
+     * 获取用户信息
+     * @return
+     */
+    public User getUserInfo(Long userId) {
+
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", userId);
+        User user = userMapper.selectOne(queryWrapper);
+
+        // 用户数据脱敏
+        user.setUpdateTime(null);
+        user.setCreateTime(null);
+        user.setPassword(null);
+
+        return user;
     }
 }

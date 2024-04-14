@@ -33,4 +33,10 @@ public interface UserService {
      * @param mobile
      */
     Result sendMsg(String mobile) throws Exception;
+
+    /**
+     * 获取用户信息
+     * @return
+     */
+    User getUserInfo(Long userId);
 }

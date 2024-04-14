@@ -1,6 +1,7 @@
 package com.sky.controller.user;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.context.BaseContext;
 import com.sky.dto.UserAccountOrPhoneLoginDTO;
 import com.sky.dto.UserRegisterDTO;
 import com.sky.entity.User;
@@ -123,6 +124,18 @@ public class UserController {
         return Result.success(userAccountLoginVO);
     }
 
+    /**
+     * 获取用户信息
+     * @return
+     */
+    @GetMapping("/userInfo")
+    @ApiOperation("获取用户信息")
+    public Result<User> getInfo() {
+        log.info("获取用户信息");
+        Long userId = BaseContext.getCurrentId();
+        User userInfo = userService.getUserInfo(userId);
 
+        return Result.success(userInfo);
+    }
 
 }
