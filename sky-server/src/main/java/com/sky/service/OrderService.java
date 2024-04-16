@@ -7,6 +7,8 @@ import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
 
+import java.math.BigDecimal;
+
 public interface OrderService {
 
     /**
@@ -27,7 +29,7 @@ public interface OrderService {
      * 支付成功，修改订单状态
      * @param outTradeNo
      */
-    Integer pay(String outTradeNo, Double amount);
+    Integer pay(String outTradeNo, BigDecimal amount);
 
     /**
      * 用户端订单分页查询

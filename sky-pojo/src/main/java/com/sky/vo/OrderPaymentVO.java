@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @Builder
@@ -26,7 +27,7 @@ public class OrderPaymentVO implements Serializable {
     private Integer payMethod;
 
     // 付款金额
-    private Double amount;
+    private BigDecimal amount;
 
     // 付款结果 1 == 成功 0 == 失败
     private Integer result;

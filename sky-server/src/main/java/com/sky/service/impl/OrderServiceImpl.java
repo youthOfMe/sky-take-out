@@ -1,7 +1,6 @@
 package com.sky.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
@@ -26,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -161,7 +161,7 @@ public class OrderServiceImpl implements OrderService {
      *
      * @param outTradeNo
      */
-    public Integer pay(String outTradeNo, Double amount) {
+    public Integer pay(String outTradeNo, BigDecimal amount) {
         // 当前登录用户id
         Long userId = BaseContext.getCurrentId();
 
@@ -179,7 +179,8 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.update(orders);
 
         User user = userMapper.selectById(userId);
-        user.setXinghaibi(user.getXinghaibi() - (int)(amount * 100));
+        BigDecimal payAmount = amount.multiply(new BigDecimal(10));
+        user.setXinghaibi(user.getXinghaibi().subtract(payAmount));
         userMapper.updateById(user);
 
         // 通过websocket向客户端了浏览器推送消息

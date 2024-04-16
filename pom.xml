@@ -129,6 +129,8 @@
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis.mybatis-plus}</version>
             </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 </project>

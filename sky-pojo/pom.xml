@@ -33,5 +33,11 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>${mybatis.mybatis-plus}</version>
         </dependency>
+
+        <!--     hibernate.validator参数校验       -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
     </dependencies>
 </project>

@@ -38,4 +38,5 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     Integer countByMap(Map map);
+
 }

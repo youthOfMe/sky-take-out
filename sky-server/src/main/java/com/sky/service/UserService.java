@@ -39,4 +39,5 @@ public interface UserService {
      * @return
      */
     User getUserInfo(Long userId);
+
 }

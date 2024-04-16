@@ -2,6 +2,7 @@ package com.sky.dto;
 
 import lombok.Data;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 public class OrdersPaymentDTO implements Serializable {
@@ -12,6 +13,6 @@ public class OrdersPaymentDTO implements Serializable {
     private Integer payMethod;
 
     // 付款金额
-    private Double amount;
+    private BigDecimal amount;
 
 }

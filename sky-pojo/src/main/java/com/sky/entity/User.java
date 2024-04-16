@@ -1,12 +1,16 @@
 package com.sky.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Builder
@@ -52,5 +56,35 @@ public class User implements Serializable {
     private String signature;
 
     // 星海币
-    private Long xinghaibi;
+    private BigDecimal xinghaibi;
+
+    /**
+     * 上下线状态 1在线 2离线
+     */
+    @TableField("active_status")
+    private Integer activeStatus;
+
+    /**
+     * 最后上下线时间
+     */
+    @TableField("last_opt_time")
+    private Date lastOptTime;
+
+    /**
+     * 最后上下线时间
+     */
+    @TableField(value = "ip_info", typeHandler = JacksonTypeHandler.class)
+    private IpInfo ipInfo;
+
+    /**
+     * 佩戴的徽章id
+     */
+    @TableField("item_id")
+    private Long itemId;
+
+    /**
+     * 用户状态 0正常 1拉黑
+     */
+    @TableField("status")
+    private Integer status;
 }
