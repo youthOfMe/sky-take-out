@@ -133,9 +133,6 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     public OrderPaymentVO payment(OrdersPaymentDTO ordersPaymentDTO) throws Exception {
-        // 当前登录用户id
-        Long userId = BaseContext.getCurrentId();
-        User user = userMapper.getById(userId);
 
         //调用微信支付接口，生成预支付交易单
         // JSONObject jsonObject = weChatPayUtil.pay(
@@ -145,16 +142,16 @@ public class OrderServiceImpl implements OrderService {
         //         user.getOpenid() //微信用户的openid
         // );
 
-        JSONObject jsonObject = new JSONObject();
+        // TODO 处理已支付
+        OrderPaymentVO vo = OrderPaymentVO.builder()
+                .orderNumber(ordersPaymentDTO.getOrderNumber())
+                .payMethod(ordersPaymentDTO.getPayMethod())
+                .amount(ordersPaymentDTO.getAmount())
+                .result(0).build();
 
-        if (jsonObject.getString("code") != null && jsonObject.getString("code").equals("ORDERPAID")) {
-            throw new OrderBusinessException("该订单已支付");
-        }
-
-        OrderPaymentVO vo = jsonObject.toJavaObject(OrderPaymentVO.class);
-        vo.setPackageStr(jsonObject.getString("package"));
-
-        paySuccess(ordersPaymentDTO.getOrderNumber());
+        // 支付成功
+        Integer status = pay(ordersPaymentDTO.getOrderNumber(), ordersPaymentDTO.getAmount());
+        vo.setResult(status);
 
         return vo;
     }
@@ -164,7 +161,7 @@ public class OrderServiceImpl implements OrderService {
      *
      * @param outTradeNo
      */
-    public void paySuccess(String outTradeNo) {
+    public Integer pay(String outTradeNo, Double amount) {
         // 当前登录用户id
         Long userId = BaseContext.getCurrentId();
 
@@ -181,6 +178,10 @@ public class OrderServiceImpl implements OrderService {
 
         orderMapper.update(orders);
 
+        User user = userMapper.selectById(userId);
+        user.setXinghaibi(user.getXinghaibi() - (int)(amount * 100));
+        userMapper.updateById(user);
+
         // 通过websocket向客户端了浏览器推送消息
         Map map = new HashMap();
         map.put("type", 1); // 1. 表示来电提醒 2. 表示客户催单
@@ -189,6 +190,8 @@ public class OrderServiceImpl implements OrderService {
 
         String json = JSON.toJSONString(map);
         webSocketServer.sendToAllClient(json);
+
+        return 1;
     }
 
     /**
