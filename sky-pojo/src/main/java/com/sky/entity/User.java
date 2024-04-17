@@ -87,4 +87,7 @@ public class User implements Serializable {
      */
     @TableField("status")
     private Integer status;
+
+    // 用户背景图
+    private String backgroundUrl;
 }

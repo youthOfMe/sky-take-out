@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sky.constant.MessageConstant;
+import com.sky.context.BaseContext;
 import com.sky.dto.UserAccountOrPhoneLoginDTO;
 import com.sky.dto.UserLoginDTO;
 import com.sky.dto.UserRegisterDTO;
+import com.sky.dto.user.UserInfoDTO;
 import com.sky.entity.User;
 import com.sky.exception.*;
 import com.sky.mapper.UserMapper;
@@ -15,6 +17,7 @@ import com.sky.result.Result;
 import com.sky.service.UserService;
 import com.sky.utils.AliSmsUtil;
 import com.sky.utils.HttpClientUtil;
+import com.sky.vo.user.UserInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
@@ -135,7 +138,7 @@ public class UserServiceImpl implements UserService {
      * @param userRegisterDTO
      * @return
      */
-    public Integer register(UserRegisterDTO userRegisterDTO) {
+    public Long register(UserRegisterDTO userRegisterDTO) {
 
         if (userRegisterDTO.getType() == 1 && userRegisterDTO.getAccount() == null) {
             throw new AccountNotFoundException("账号不许为空");
@@ -181,7 +184,7 @@ public class UserServiceImpl implements UserService {
         user.setUpdateTime(LocalDateTime.now());
         Integer userId = userMapper.insert(user);
 
-        return userId;
+        return Long.valueOf(userId);
     }
 
     /**
@@ -219,6 +222,26 @@ public class UserServiceImpl implements UserService {
         user.setPassword(null);
 
         return user;
+    }
+
+    /**
+     * 修改用户信息
+     * @param userInfoDTO
+     */
+    public UserInfoVO resetUserInfo(UserInfoDTO userInfoDTO) {
+        Long userId = BaseContext.getCurrentId();
+        User user = new User();
+
+        BeanUtils.copyProperties(userInfoDTO, user);
+        user.setId(userId);
+
+        userMapper.updateById(user);
+
+        UserInfoVO userInfoVO = new UserInfoVO();
+        userInfoVO.setName(userInfoDTO.getName());
+
+        return userInfoVO;
+
     }
 
 }

@@ -3,8 +3,10 @@ package com.sky.service;
 import com.sky.dto.UserAccountOrPhoneLoginDTO;
 import com.sky.dto.UserLoginDTO;
 import com.sky.dto.UserRegisterDTO;
+import com.sky.dto.user.UserInfoDTO;
 import com.sky.entity.User;
 import com.sky.result.Result;
+import com.sky.vo.user.UserInfoVO;
 
 public interface UserService {
 
@@ -26,7 +28,7 @@ public interface UserService {
      * 用户注册
      * @return
      */
-    Integer register(UserRegisterDTO userRegisterDTO) throws Exception;
+    Long register(UserRegisterDTO userRegisterDTO) throws Exception;
 
     /**
      * 发送验证码
@@ -40,4 +42,9 @@ public interface UserService {
      */
     User getUserInfo(Long userId);
 
+    /**
+     * 修改用户信息
+     * @param userInfoDTO
+     */
+    UserInfoVO resetUserInfo(UserInfoDTO userInfoDTO);
 }

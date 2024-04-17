@@ -4,13 +4,16 @@ import com.sky.constant.JwtClaimsConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.UserAccountOrPhoneLoginDTO;
 import com.sky.dto.UserRegisterDTO;
+import com.sky.dto.user.UserInfoDTO;
 import com.sky.entity.User;
 import com.sky.properties.JwtProperties;
 import com.sky.result.Result;
 import com.sky.service.UserService;
 import com.sky.utils.AliSmsUtil;
 import com.sky.utils.JwtUtil;
+import com.sky.utils.JwtUtils;
 import com.sky.vo.UserLoginOrRegisterVO;
+import com.sky.vo.user.UserInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +37,16 @@ public class UserController {
 
     @Autowired
     private AliSmsUtil aliSmsUtil;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+
+    private JwtUtils jwtUtils;
+    //token过期时间
+    private static final Integer TOKEN_EXPIRE_DAYS = 5;
+    //token续期时间
+    private static final Integer TOKEN_RENEWAL_DAYS = 2;
 
     // @PostMapping("/login")
     // @ApiOperation("微信登录")
@@ -67,7 +80,7 @@ public class UserController {
         log.info("用户注册: {}", userRegisterDTO);
 
         // 用户注册
-        Integer userId = userService.register(userRegisterDTO);
+        Long userId = userService.register(userRegisterDTO);
 
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.USER_ID, userId);
@@ -76,6 +89,7 @@ public class UserController {
                 jwtProperties.getUserTtl(),
                 claims);
 
+        // token = jwtUtil.login(userId);
 
         UserLoginOrRegisterVO userAccountLoginVO = UserLoginOrRegisterVO.builder()
                 .id(Long.valueOf(userId))
@@ -115,6 +129,9 @@ public class UserController {
                 jwtProperties.getUserSecretKey(),
                 jwtProperties.getUserTtl(),
                 claims);
+        // token = jwtUtil.login(user.getId());
+
+
 
         UserLoginOrRegisterVO userAccountLoginVO = UserLoginOrRegisterVO.builder()
                 .id(user.getId())
@@ -136,6 +153,19 @@ public class UserController {
         User userInfo = userService.getUserInfo(userId);
 
         return Result.success(userInfo);
+    }
+
+    /**
+     * 修改用户信息
+     * @return
+     */
+    @PutMapping("/userInfo")
+    @ApiOperation("修改用户信息")
+    public Result<UserInfoVO> resetInfo(@RequestBody UserInfoDTO userInfoDTO) {
+        log.info("修改用户信息");
+        UserInfoVO userInfoVO = userService.resetUserInfo(userInfoDTO);
+
+        return Result.success(userInfoVO);
     }
 
 
