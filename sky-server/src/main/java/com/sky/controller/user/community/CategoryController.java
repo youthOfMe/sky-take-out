@@ -1,5 +1,6 @@
 package com.sky.controller.user.community;
 
+import com.sky.entity.community.CommunityCategory;
 import com.sky.entity.community.CommunityParentCategory;
 import com.sky.result.Result;
 import com.sky.service.community.CategoryService;
@@ -28,9 +29,22 @@ public class CategoryController {
      */
     @GetMapping("/parentList")
     @ApiOperation("一级分类板块查询")
-    public Result<List<CommunityParentCategory>> parentList() {
+    public Result<List<CommunityParentCategory>> parentCategoryList() {
         log.info("用户查询一级分类");
         List<CommunityParentCategory> list = categoryService.parentCategory();
+        return Result.success(list);
+    }
+
+    /**
+     * 社区本快查询
+     * @param parentId
+     * @return
+     */
+    @GetMapping("list")
+    @ApiOperation("板块查询")
+    public Result<List<CommunityCategory>> categoryList(Long parentId, Integer recommended) {
+        log.info("社区板块查询");
+        List<CommunityCategory> list = categoryService.category(parentId, recommended);
         return Result.success(list);
     }
 }

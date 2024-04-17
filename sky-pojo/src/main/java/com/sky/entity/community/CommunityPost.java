@@ -12,40 +12,48 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommunityCategory {
-
+public class CommunityPost {
     // id
     private Long id;
 
     // 创建者
     private Long userId;
 
-    // 管理者
-    private Long managerId;
+    // 标题
+    private String title;
 
-    // 归属分类
-    private Long parentId;
+    // 内容
+    private String content;
 
-    // 名称
-    private String name;
+    // 点赞量
+    private Integer thumb;
 
-    // 描述
-    private String description;
+    // 评论量
+    private Integer commit;
 
-    // 封面图片
+    // 分享量
+    private Integer share;
+
+    // 帖子封面
     private String coverUrl;
 
-    // 排序
-    private Integer sort;
+    // 帖子标签
+    private String labels;
 
-    // 是否推荐
-    private Integer recommended;
+    // 图片识别标签
+    private String imageLabels;
+
+    // 归属板块
+    private Long categoryId;
+
+    // 归属专栏
+    private Long columnId;
 
     // 创建时间
     private LocalDateTime createdTime;
 
     // 更新时间
-    private LocalDateTime updatedTime;
+    private LocalDateTime udpatedTime;
 
     // 是否逻辑删除
     @TableLogic

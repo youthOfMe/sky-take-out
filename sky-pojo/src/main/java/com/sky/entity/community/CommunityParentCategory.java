@@ -37,5 +37,5 @@ public class CommunityParentCategory {
 
     // 是否逻辑删除
     @TableLogic
-    private Integer delete;
+    private Integer deleted;
 }
