@@ -1,5 +1,7 @@
 server:
   port: 8080
+  tomcat:
+    max-http-form-post-size: 100MB
 
 spring:
   profiles:
@@ -17,6 +19,16 @@ spring:
     port: ${sky.redis.port}
     password: ${sky.redis.password}
     database: ${sky.redis.database}
+  # 文件上传限制
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 1000MB
+  http:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
 
 mybatis:
   #mapper配置文件
@@ -65,3 +77,4 @@ mybatis-plus:
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
+

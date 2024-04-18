@@ -1,7 +1,5 @@
-package com.sky.entity.community;
+package com.sky.vo.community;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +11,8 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommunityPost {
+public class CommunityPostVO {
     // id
-    private Long id;
-
-    @TableField(exist = false)
     private String postId;
 
     // 创建者
@@ -41,9 +36,6 @@ public class CommunityPost {
     // 帖子封面
     private String coverUrl;
 
-    // 帖子图片
-    private String imageUrls;
-
     // 帖子标签
     private String labels;
 
@@ -61,10 +53,6 @@ public class CommunityPost {
 
     // 更新时间
     private LocalDateTime updatedTime;
-
-    // 是否逻辑删除
-    @TableLogic
-    private Integer deleted;
 
     // 发帖人头像
     private String avatarUrl;

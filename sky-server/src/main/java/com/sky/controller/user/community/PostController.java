@@ -1,15 +1,15 @@
 package com.sky.controller.user.community;
 
+import com.sky.dto.community.CommunityPostDTO;
 import com.sky.entity.community.CommunityPost;
 import com.sky.result.Result;
 import com.sky.service.community.PostService;
+import com.sky.vo.community.CommunityPostVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +32,29 @@ public class PostController {
     public Result<List<CommunityPost>> list(Long categoryId) {
         List<CommunityPost> list = postService.list(categoryId);
         return Result.success(list);
+    }
+
+    /**
+     * 用户发布帖子
+     * @param communityPostDTO
+     * @return
+     */
+    @PostMapping("/post")
+    @ApiOperation("用户发布帖子")
+    public Result publishPost(@RequestBody CommunityPostDTO communityPostDTO) {
+        postService.publishPost(communityPostDTO);
+        return Result.success();
+    }
+
+    /**
+     * 根据ID查询帖子详情
+     * @param id
+     * @return
+     */
+    @GetMapping("/post")
+    @ApiOperation("根据ID获取帖子详细")
+    public Result<CommunityPostVO> getPostById(Long id) {
+        CommunityPostVO communityPost = postService.getPostById(id);
+        return Result.success(communityPost);
     }
 }

@@ -1,6 +1,8 @@
 package com.sky.service.community;
 
+import com.sky.dto.community.CommunityPostDTO;
 import com.sky.entity.community.CommunityPost;
+import com.sky.vo.community.CommunityPostVO;
 
 import java.util.List;
 
@@ -12,4 +14,17 @@ public interface PostService {
      * @return
      */
     List<CommunityPost> list(Long categoryId);
+
+    /**
+     * 用户发布帖子
+     * @param communityPost
+     */
+    void publishPost(CommunityPostDTO communityPostDTO);
+
+    /**
+     * 根据ID查询帖子详情
+     * @param id
+     * @return
+     */
+    CommunityPostVO getPostById(Long id);
 }
