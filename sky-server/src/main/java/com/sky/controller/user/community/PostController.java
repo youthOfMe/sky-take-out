@@ -64,6 +64,8 @@ public class PostController {
      * @param postId
      * @return
      */
+    @GetMapping("/isThumb")
+    @ApiOperation("判断用户是否对帖子进行点赞了")
     public Result<Boolean> isThumbByUserId(String postId) {
         Boolean isThumb = postService.isThumbByUserId(postId);
         return Result.success(isThumb);

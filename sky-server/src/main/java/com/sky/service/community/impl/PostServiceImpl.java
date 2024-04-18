@@ -113,15 +113,24 @@ public class PostServiceImpl implements PostService {
         Long userId = BaseContext.getCurrentId();
 
         CommunityPost communityPost = postMapper.selectById(Long.valueOf(postId));
-        communityPost.setThumb(communityPost.getThumb() + 1);
         User user = userMapper.selectById(userId);
-        user.setThumb(user.getThumb() + 1);
-
         ThumbPostUser thumbPostUser = new ThumbPostUser();
         thumbPostUser.setPostId(postId);
         thumbPostUser.setUserId(String.valueOf(userId));
         thumbPostUser.setThumbTime(LocalDateTime.now());
-        thumbPostUserMapper.insert(thumbPostUser);
+        if (type == 1) {
+            communityPost.setThumb(communityPost.getThumb() + 1);
+            user.setThumb(user.getThumb() + 1);
+            thumbPostUserMapper.insert(thumbPostUser);
+        } else {
+            communityPost.setThumb(communityPost.getThumb() - 1);
+            user.setThumb(user.getThumb() - 1);
+            QueryWrapper<ThumbPostUser> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("user_id", String.valueOf(userId));
+            thumbPostUser = thumbPostUserMapper.selectOne(queryWrapper);
+            thumbPostUserMapper.deleteById(thumbPostUser.getId());
+        }
+
 
         userMapper.updateById(user);
         postMapper.updateById(communityPost);
@@ -136,10 +145,9 @@ public class PostServiceImpl implements PostService {
         Long userId = BaseContext.getCurrentId();
         QueryWrapper<ThumbPostUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("post_id", postId);
-        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("user_id", String.valueOf(userId));
+        log.info("niubi: {}", thumbPostUserMapper.selectOne(queryWrapper));
 
-        Boolean isThumb = thumbPostUserMapper.selectOne(queryWrapper) != null;
-
-        return isThumb;
+        return thumbPostUserMapper.selectOne(queryWrapper) != null;
     }
 }
