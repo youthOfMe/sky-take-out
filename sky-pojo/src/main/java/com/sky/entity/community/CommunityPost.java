@@ -53,9 +53,15 @@ public class CommunityPost {
     private LocalDateTime createdTime;
 
     // 更新时间
-    private LocalDateTime udpatedTime;
+    private LocalDateTime updatedTime;
 
     // 是否逻辑删除
     @TableLogic
     private Integer deleted;
+
+    // 发帖人头像
+    private String avatarUrl;
+
+    // 发帖人昵称
+    private String name;
 }
