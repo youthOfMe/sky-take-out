@@ -76,4 +76,7 @@ public class CommunityPost {
 
     // 发帖人昵称
     private String name;
+
+    // 博主的在线状态
+    private Integer activeStatus;
 }

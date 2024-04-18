@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -59,4 +60,10 @@ public class CommunityPostVO {
 
     // 发帖人昵称
     private String name;
+
+    // 博主的在线状态
+    private Integer activeStatus;
+
+    // 图片列表
+    private List<String> imgUrlList;
 }

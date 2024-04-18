@@ -2,6 +2,7 @@ package com.sky.service.community.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.sky.context.BaseContext;
 import com.sky.dto.community.CommunityPostDTO;
 import com.sky.entity.User;
 import com.sky.entity.community.CommunityPost;
@@ -47,6 +48,7 @@ public class PostServiceImpl implements PostService {
             if (user != null) {
                 communityPost.setAvatarUrl(user.getAvatar());
                 communityPost.setName(user.getName());
+                communityPost.setActiveStatus(user.getActiveStatus());
             }
         }
 
@@ -78,6 +80,27 @@ public class PostServiceImpl implements PostService {
         CommunityPostVO communityPostVO = new CommunityPostVO();
         BeanUtils.copyProperties(communityPost, communityPostVO);
         communityPostVO.setPostId(String.valueOf(communityPost.getId()));
+        if (communityPost.getImageUrls() != null) {
+            List<String> arrayList = JSONObject.parseArray(JSONObject.toJSON(communityPost.getImageUrls()).toString(), String.class);
+            communityPostVO.setImgUrlList(arrayList);
+        }
+
         return communityPostVO;
+    }
+
+    /**
+     * 帖子点赞 type = 1 点赞 type = 0 取消点赞
+     * @param type
+     */
+    public void thumb(Integer type, String postId) {
+        Long userId = BaseContext.getCurrentId();
+
+        CommunityPost communityPost = postMapper.selectById(Long.valueOf(postId));
+        communityPost.setThumb(communityPost.getThumb() + 1);
+        User user = userMapper.selectById(userId);
+        user.setThumb(user.getThumb() + 1);
+
+        userMapper.updateById(user);
+        postMapper.updateById(communityPost);
     }
 }

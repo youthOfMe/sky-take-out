@@ -90,4 +90,13 @@ public class User implements Serializable {
 
     // 用户背景图
     private String backgroundUrl;
+
+    // 用户等级
+    private Integer lv;
+
+    // 用户经验值
+    private Integer experience;
+
+    // 用户获赞
+    private Long thumb;
 }

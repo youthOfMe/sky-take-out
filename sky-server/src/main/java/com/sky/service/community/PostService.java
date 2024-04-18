@@ -27,4 +27,11 @@ public interface PostService {
      * @return
      */
     CommunityPostVO getPostById(Long id);
+
+    /**
+     * 帖子点赞
+     * @param type
+     * @param postId
+     */
+    void thumb(Integer type, String postId);
 }

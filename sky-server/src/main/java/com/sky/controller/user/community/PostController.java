@@ -53,8 +53,20 @@ public class PostController {
      */
     @GetMapping("/post")
     @ApiOperation("根据ID获取帖子详细")
-    public Result<CommunityPostVO> getPostById(Long id) {
-        CommunityPostVO communityPost = postService.getPostById(id);
+    public Result<CommunityPostVO> getPostById(String id) {
+        Long postId = Long.valueOf(id);
+        CommunityPostVO communityPost = postService.getPostById(postId);
         return Result.success(communityPost);
+    }
+
+    /**
+     * 帖子点赞
+     * @param type
+     * @return
+     */
+    @PostMapping("/thumb")
+    public Result thumb(Integer type, String postId) {
+        postService.thumb(type, postId);
+        return Result.success();
     }
 }
