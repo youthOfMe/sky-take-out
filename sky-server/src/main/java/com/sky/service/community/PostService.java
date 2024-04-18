@@ -34,4 +34,11 @@ public interface PostService {
      * @param postId
      */
     void thumb(Integer type, String postId);
+
+    /**
+     * 判断是否进行点在了
+     * @param postId
+     * @return
+     */
+    Boolean isThumbByUserId(String postId);
 }

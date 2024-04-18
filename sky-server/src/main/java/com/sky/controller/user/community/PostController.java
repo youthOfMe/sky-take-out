@@ -60,11 +60,22 @@ public class PostController {
     }
 
     /**
+     * 判断是否进行点在了
+     * @param postId
+     * @return
+     */
+    public Result<Boolean> isThumbByUserId(String postId) {
+        Boolean isThumb = postService.isThumbByUserId(postId);
+        return Result.success(isThumb);
+    }
+
+    /**
      * 帖子点赞
      * @param type
      * @return
      */
     @PostMapping("/thumb")
+    @ApiOperation("帖子点赞")
     public Result thumb(Integer type, String postId) {
         postService.thumb(type, postId);
         return Result.success();

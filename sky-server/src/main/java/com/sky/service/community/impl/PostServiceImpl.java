@@ -6,8 +6,10 @@ import com.sky.context.BaseContext;
 import com.sky.dto.community.CommunityPostDTO;
 import com.sky.entity.User;
 import com.sky.entity.community.CommunityPost;
+import com.sky.entity.community.ThumbPostUser;
 import com.sky.mapper.UserMapper;
 import com.sky.mapper.community.PostMapper;
+import com.sky.mapper.community.ThumbPostUserMapper;
 import com.sky.service.community.PostService;
 import com.sky.vo.community.CommunityPostVO;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ThumbPostUserMapper thumbPostUserMapper;
 
     /**
      * 根据板块ID获取帖子数据
@@ -89,6 +94,18 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
+     * 获取点赞的用户列表
+     * @param postId
+     * @return
+     */
+    // public List<String> thumb_list(String postId) {
+    //
+    // }
+
+
+
+
+    /**
      * 帖子点赞 type = 1 点赞 type = 0 取消点赞
      * @param type
      */
@@ -100,7 +117,29 @@ public class PostServiceImpl implements PostService {
         User user = userMapper.selectById(userId);
         user.setThumb(user.getThumb() + 1);
 
+        ThumbPostUser thumbPostUser = new ThumbPostUser();
+        thumbPostUser.setPostId(postId);
+        thumbPostUser.setUserId(String.valueOf(userId));
+        thumbPostUser.setThumbTime(LocalDateTime.now());
+        thumbPostUserMapper.insert(thumbPostUser);
+
         userMapper.updateById(user);
         postMapper.updateById(communityPost);
+    }
+
+    /**
+     * 判断是否进行点在了
+     * @param postId
+     * @return
+     */
+    public Boolean isThumbByUserId(String postId) {
+        Long userId = BaseContext.getCurrentId();
+        QueryWrapper<ThumbPostUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("post_id", postId);
+        queryWrapper.eq("user_id", userId);
+
+        Boolean isThumb = thumbPostUserMapper.selectOne(queryWrapper) != null;
+
+        return isThumb;
     }
 }
