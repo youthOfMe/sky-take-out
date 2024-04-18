@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -43,6 +44,10 @@ public class CommunityPost {
 
     // 帖子图片
     private String imageUrls;
+
+    // 帖子图片
+    @TableField(exist = false)
+    private List<String> imgUrlList;
 
     // 帖子标签
     private String labels;

@@ -1,5 +1,6 @@
 package com.sky.service.community.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sky.dto.community.CommunityPostDTO;
 import com.sky.entity.User;
@@ -38,6 +39,10 @@ public class PostServiceImpl implements PostService {
         for (CommunityPost communityPost : list) {
             communityPost.setPostId(String.valueOf(communityPost.getId()));
             communityPost.setId(null);
+            if (communityPost.getImageUrls() != null) {
+                List<String> arrayList = JSONObject.parseArray(JSONObject.toJSON(communityPost.getImageUrls()).toString(), String.class);
+                communityPost.setImgUrlList(arrayList);
+            }
             User user = userMapper.selectById(communityPost.getUserId());
             if (user != null) {
                 communityPost.setAvatarUrl(user.getAvatar());
@@ -55,7 +60,7 @@ public class PostServiceImpl implements PostService {
     public void publishPost(CommunityPostDTO communityPostDTO) {
         CommunityPost post = new CommunityPost();
         BeanUtils.copyProperties(communityPostDTO, post);
-        post.setImageUrls(String.valueOf(communityPostDTO.getImageUrlsD()));
+        post.setImageUrls(JSONObject.toJSONString(communityPostDTO.getImageUrlsD()));
         post.setCreatedTime(LocalDateTime.now());
         post.setUpdatedTime(LocalDateTime.now());
         postMapper.insert(post);
