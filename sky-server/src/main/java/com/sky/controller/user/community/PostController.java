@@ -82,4 +82,15 @@ public class PostController {
         postService.thumb(type, postId);
         return Result.success();
     }
+
+    /**
+     * 根据用户ID获取帖子列表
+     * @return
+     */
+    @GetMapping("/postByUserId")
+    @ApiOperation("根据用户ID获取帖子列表")
+    public Result<List<CommunityPost>> getPostListByUserId() {
+        List<CommunityPost> list = postService.getPostByUserId();
+        return Result.success(list);
+    }
 }

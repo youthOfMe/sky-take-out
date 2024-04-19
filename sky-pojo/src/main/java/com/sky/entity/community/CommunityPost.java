@@ -79,4 +79,7 @@ public class CommunityPost {
 
     // 博主的在线状态
     private Integer activeStatus;
+
+    // 归属板块名称
+    private String categoryName;
 }

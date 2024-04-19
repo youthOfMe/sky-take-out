@@ -41,4 +41,10 @@ public interface PostService {
      * @return
      */
     Boolean isThumbByUserId(String postId);
+
+    /**
+     * 根据用户ID获取帖子列表
+     * @return
+     */
+    List<CommunityPost> getPostByUserId();
 }

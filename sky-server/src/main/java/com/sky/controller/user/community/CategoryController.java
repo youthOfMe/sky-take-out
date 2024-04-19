@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController("userCommunityController")
+@RestController("userCommunityCategoryController")
 @RequestMapping("/user/community/category")
 @Api(tags = "C端社区分类相关接口")
 @Slf4j

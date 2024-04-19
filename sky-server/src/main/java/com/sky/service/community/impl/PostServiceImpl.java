@@ -127,6 +127,7 @@ public class PostServiceImpl implements PostService {
             user.setThumb(user.getThumb() - 1);
             QueryWrapper<ThumbPostUser> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("user_id", String.valueOf(userId));
+            queryWrapper.eq("post_id", postId);
             thumbPostUser = thumbPostUserMapper.selectOne(queryWrapper);
             thumbPostUserMapper.deleteById(thumbPostUser.getId());
         }
@@ -146,8 +147,21 @@ public class PostServiceImpl implements PostService {
         QueryWrapper<ThumbPostUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("post_id", postId);
         queryWrapper.eq("user_id", String.valueOf(userId));
-        log.info("niubi: {}", thumbPostUserMapper.selectOne(queryWrapper));
+        log.info("niubi: {}", postId);
 
         return thumbPostUserMapper.selectOne(queryWrapper) != null;
+    }
+
+    /**
+     * 根据用户ID获取帖子列表
+     * @return
+     */
+    public List<CommunityPost> getPostByUserId() {
+        Long userId = BaseContext.getCurrentId();
+
+        QueryWrapper<CommunityPost> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        List<CommunityPost> list = postMapper.selectList(queryWrapper);
+        return list;
     }
 }
