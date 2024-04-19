@@ -82,4 +82,7 @@ public class CommunityPost {
 
     // 归属板块名称
     private String categoryName;
+
+    // 是否被推荐
+    private Integer recommended;
 }
