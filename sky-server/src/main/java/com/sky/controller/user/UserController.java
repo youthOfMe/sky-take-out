@@ -7,6 +7,7 @@ import com.sky.dto.UserRegisterDTO;
 import com.sky.dto.user.UserInfoDTO;
 import com.sky.dto.user.UserPageQueryDTO;
 import com.sky.entity.User;
+import com.sky.exception.BaseException;
 import com.sky.properties.JwtProperties;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
@@ -20,9 +21,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -192,5 +195,20 @@ public class UserController {
         log.info("分页获取用户数据");
         PageResult pageResult = userService.pageQuery(userPageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    /**
+     * 根据标签搜索用户
+     * @param tagNameList
+     * @return
+     */
+    @GetMapping("/search/tags")
+    @ApiOperation("根据标签搜索用户")
+    public Result<List<User>> searchUsersByTags(@RequestParam(required = false) List<String> tagNameList) {
+        if (CollectionUtils.isEmpty(tagNameList)) {
+            throw new BaseException("参数出错");
+        }
+        List<User> userList = userService.searchUsersByTags(tagNameList);
+        return Result.success(userList);
     }
 }

@@ -10,6 +10,8 @@ import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.vo.user.UserInfoVO;
 
+import java.util.List;
+
 public interface UserService {
 
     /**
@@ -60,4 +62,12 @@ public interface UserService {
      * @return
      */
     PageResult pageQuery(UserPageQueryDTO userPageQueryDTO);
+
+    /**
+     * 根据标签搜索用户
+     *
+     * @param tagNameList
+     * @return
+     */
+    List<User> searchUsersByTags(List<String> tagNameList);
 }
