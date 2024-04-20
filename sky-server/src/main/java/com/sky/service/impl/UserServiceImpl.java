@@ -244,4 +244,20 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * 用户签到
+     */
+    public void sign() {
+        Long userId = BaseContext.getCurrentId();
+        User user = userMapper.selectById(userId);
+        if (user.getIsSign() == 1) {
+            throw new BaseException("您已经进行签到过了!");
+        }
+        user.setSignIcon(user.getSignIcon() + 5);
+        user.setIsSign(1);
+        user.setSignDay(user.getSignDay() + 1);
+
+        userMapper.updateById(user);
+    }
+
 }

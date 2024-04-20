@@ -47,4 +47,9 @@ public interface UserService {
      * @param userInfoDTO
      */
     UserInfoVO resetUserInfo(UserInfoDTO userInfoDTO);
+
+    /**
+     * 用户签到
+     */
+    void sign();
 }

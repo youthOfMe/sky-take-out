@@ -168,5 +168,15 @@ public class UserController {
         return Result.success(userInfoVO);
     }
 
-
+    /**
+     * 用户签到
+     * @return
+     */
+    @GetMapping("/sign")
+    @ApiOperation("用户签到")
+    public Result sign() {
+        log.info("用户签到");
+        userService.sign();
+        return Result.success();
+    }
 }

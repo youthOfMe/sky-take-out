@@ -47,7 +47,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         // 如果已经存在 只需要将数量加一
         if (list != null && list.size() > 0) {
             ShoppingCart cart = list.get(0);
-            cart.setNumber(cart.getNumber() + 1);
+            cart.setNumber(cart.getNumber() + shoppingCart.getNumber());
             shoppingCartMapper.updateNumberById(cart);
         } else {
             // 如果不存在 需要插入一条购物车数据
@@ -69,7 +69,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 shoppingCart.setImage(setmeal.getImage());
                 shoppingCart.setAmount(setmeal.getPrice());
             }
-            shoppingCart.setNumber(1);
+            shoppingCart.setNumber(shoppingCartDTO.getNumber());
             shoppingCart.setCreateTime(LocalDateTime.now());
             shoppingCartMapper.insert(shoppingCart);
         }

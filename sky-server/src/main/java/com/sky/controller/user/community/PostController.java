@@ -29,8 +29,8 @@ public class PostController {
      */
     @GetMapping("/list")
     @ApiOperation("根据板块ID回去帖子数据")
-    public Result<List<CommunityPost>> list(Long categoryId, Integer recommended) {
-        List<CommunityPost> list = postService.list(categoryId, recommended);
+    public Result<List<CommunityPost>> list(Long categoryId, Integer recommended, Long userId) {
+        List<CommunityPost> list = postService.list(categoryId, recommended, userId);
         return Result.success(list);
     }
 

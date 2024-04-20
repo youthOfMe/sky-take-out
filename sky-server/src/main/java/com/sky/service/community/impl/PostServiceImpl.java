@@ -38,7 +38,7 @@ public class PostServiceImpl implements PostService {
      * @param categoryId
      * @return
      */
-    public List<CommunityPost> list(Long categoryId, Integer recommended) {
+    public List<CommunityPost> list(Long categoryId, Integer recommended, Long userId) {
         log.info("查询帖子列表: {}, {}", categoryId, recommended);
         QueryWrapper<CommunityPost> queryWrapper = new QueryWrapper<>();
         if (categoryId != null) {
@@ -46,6 +46,9 @@ public class PostServiceImpl implements PostService {
         }
         if (recommended != null) {
             queryWrapper.eq("recommended", recommended);
+        }
+        if (userId != null) {
+            queryWrapper.eq("user_id", userId);
         }
         List<CommunityPost> list = postMapper.selectList(queryWrapper);
         for (CommunityPost communityPost : list) {

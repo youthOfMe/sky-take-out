@@ -13,7 +13,7 @@ public interface PostService {
      * @param categoryId
      * @return
      */
-    List<CommunityPost> list(Long categoryId, Integer recommended);
+    List<CommunityPost> list(Long categoryId, Integer recommended, Long userId);
 
     /**
      * 用户发布帖子
