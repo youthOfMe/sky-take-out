@@ -114,4 +114,7 @@ public class User implements Serializable {
 
     // 人民币
     private Integer rmb;
+
+    // 用户标签
+    private String tags;
 }

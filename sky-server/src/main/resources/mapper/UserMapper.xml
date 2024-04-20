@@ -25,14 +25,14 @@
     <!--  分页查询数据  -->
     <select id="pageQuery" resultType="com.sky.entity.User">
         select * from user
-        <where>
-            <if test="name != null and name != ''">
-                and name like concat('%',#{name},'%')
-            </if>
-            <if test="type != null">
-                and type = #{type}
-            </if>
-        </where>
+<!--        <where>-->
+<!--            <if test="name != null and name != ''">-->
+<!--                and name like concat('%',#{name},'%')-->
+<!--            </if>-->
+<!--            <if test="type != null">-->
+<!--                and type = #{type}-->
+<!--            </if>-->
+<!--        </where>-->
 --         order by sort asc , create_time desc
     </select>
 </mapper>

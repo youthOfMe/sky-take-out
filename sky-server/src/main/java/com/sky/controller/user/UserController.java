@@ -186,7 +186,9 @@ public class UserController {
      * 分页获取用户列表
      * @return
      */
-    public Result<PageResult> page(UserPageQueryDTO userPageQueryDTO) {
+    @GetMapping("/page")
+    @ApiOperation("用户分页查询")
+    public Result<PageResult> pageQuery(UserPageQueryDTO userPageQueryDTO) {
         log.info("分页获取用户数据");
         PageResult pageResult = userService.pageQuery(userPageQueryDTO);
         return Result.success(pageResult);
