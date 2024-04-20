@@ -3,16 +3,20 @@ package com.sky.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.UserAccountOrPhoneLoginDTO;
 import com.sky.dto.UserLoginDTO;
 import com.sky.dto.UserRegisterDTO;
 import com.sky.dto.user.UserInfoDTO;
+import com.sky.dto.user.UserPageQueryDTO;
 import com.sky.entity.User;
 import com.sky.exception.*;
 import com.sky.mapper.UserMapper;
 import com.sky.properties.WeChatProperties;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.UserService;
 import com.sky.utils.AliSmsUtil;
@@ -258,6 +262,17 @@ public class UserServiceImpl implements UserService {
         user.setSignDay(user.getSignDay() + 1);
 
         userMapper.updateById(user);
+    }
+
+    /**
+     * 分页获取用户列表
+     * @return
+     */
+    public PageResult pageQuery(UserPageQueryDTO userPageQueryDTO) {
+        PageHelper.startPage(userPageQueryDTO.getPage(), userPageQueryDTO.getPageSize());
+        Page<User> page = userMapper.pageQuery(userPageQueryDTO);
+
+        return new PageResult(page.getTotal(), page.getResult());
     }
 
 }

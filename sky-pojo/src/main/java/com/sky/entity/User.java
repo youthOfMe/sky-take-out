@@ -111,4 +111,7 @@ public class User implements Serializable {
 
     // 用户是否进行其拿到
     private Integer isSign;
+
+    // 人民币
+    private Integer rmb;
 }

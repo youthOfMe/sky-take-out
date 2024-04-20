@@ -5,8 +5,10 @@ import com.sky.context.BaseContext;
 import com.sky.dto.UserAccountOrPhoneLoginDTO;
 import com.sky.dto.UserRegisterDTO;
 import com.sky.dto.user.UserInfoDTO;
+import com.sky.dto.user.UserPageQueryDTO;
 import com.sky.entity.User;
 import com.sky.properties.JwtProperties;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.UserService;
 import com.sky.utils.AliSmsUtil;
@@ -178,5 +180,15 @@ public class UserController {
         log.info("用户签到");
         userService.sign();
         return Result.success();
+    }
+
+    /**
+     * 分页获取用户列表
+     * @return
+     */
+    public Result<PageResult> page(UserPageQueryDTO userPageQueryDTO) {
+        log.info("分页获取用户数据");
+        PageResult pageResult = userService.pageQuery(userPageQueryDTO);
+        return Result.success(pageResult);
     }
 }

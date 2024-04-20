@@ -1,6 +1,8 @@
 package com.sky.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.pagehelper.Page;
+import com.sky.dto.user.UserPageQueryDTO;
 import com.sky.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -39,4 +41,10 @@ public interface UserMapper extends BaseMapper<User> {
      */
     Integer countByMap(Map map);
 
+    /**
+     * 分页查询
+     * @param userPageQueryDTO
+     * @return
+     */
+    Page<User> pageQuery(UserPageQueryDTO userPageQueryDTO);
 }

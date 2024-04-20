@@ -4,7 +4,9 @@ import com.sky.dto.UserAccountOrPhoneLoginDTO;
 import com.sky.dto.UserLoginDTO;
 import com.sky.dto.UserRegisterDTO;
 import com.sky.dto.user.UserInfoDTO;
+import com.sky.dto.user.UserPageQueryDTO;
 import com.sky.entity.User;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.vo.user.UserInfoVO;
 
@@ -52,4 +54,10 @@ public interface UserService {
      * 用户签到
      */
     void sign();
+
+    /**
+     * 分页获取用户列表
+     * @return
+     */
+    PageResult pageQuery(UserPageQueryDTO userPageQueryDTO);
 }
