@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.chenhai.dto.team.TeamJoinDTO;
 import com.chenhai.dto.team.TeamQueryDTO;
-import com.chenhai.dto.team.TeamUserDTO;
+import com.chenhai.vo.user.TeamUserVO;
 import com.chenhai.entity.User;
 import com.chenhai.entity.team.Team;
 import com.chenhai.entity.team.UserTeam;
@@ -123,7 +123,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements Te
      * @param isAdmin
      * @return
      */
-    public List<TeamUserDTO> listTeams(TeamQueryDTO teamQuery, boolean isAdmin) {
+    public List<TeamUserVO> listTeams(TeamQueryDTO teamQuery, boolean isAdmin) {
         QueryWrapper<Team> queryWrapper = new QueryWrapper<>();
         // 组合查询条件
         if (teamQuery != null) {
@@ -175,7 +175,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements Te
         if (CollectionUtils.isEmpty(teamList)) {
             return new ArrayList<>();
         }
-        List<TeamUserDTO> teamUserVOList = new ArrayList<>();
+        List<TeamUserVO> teamUserVOList = new ArrayList<>();
         // 关联查询创建人的用户信息
         for (Team team : teamList) {
             Long userId = team.getUserId();
@@ -183,7 +183,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements Te
                 continue;
             }
             User user = userService.getById(userId);
-            TeamUserDTO teamUserVO = new TeamUserDTO();
+            TeamUserVO teamUserVO = new TeamUserVO();
             BeanUtils.copyProperties(team, teamUserVO);
             // 脱敏用户信息
             if (user != null) {

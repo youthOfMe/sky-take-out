@@ -1,6 +1,5 @@
-package com.chenhai.dto.team;
+package com.chenhai.vo.user;
 
-import com.chenhai.vo.user.UserInfoVO;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
  * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 @Data
-public class TeamUserDTO implements Serializable {
+public class TeamUserVO implements Serializable {
 
     private static final long serialVersionUID = 1899063007109226944L;
 
