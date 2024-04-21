@@ -1,4 +1,4 @@
-package com.chenhai.dto.team;
+package com.chenhai.entity.team;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
@@ -43,7 +43,7 @@ public class UserTeam implements Serializable {
      * 是否删除
      */
     @TableLogic
-    private Integer isDelete;
+    private Integer deleted;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
