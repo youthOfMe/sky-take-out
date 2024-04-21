@@ -1,5 +1,6 @@
 package com.chenhai.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.chenhai.dto.UserAccountOrPhoneLoginDTO;
 import com.chenhai.dto.UserLoginDTO;
 import com.chenhai.dto.UserRegisterDTO;
@@ -13,7 +14,7 @@ import com.chenhai.vo.user.UserInfoVO;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends IService<User> {
 
     /**
      * 微信登录
@@ -91,4 +92,11 @@ public interface UserService {
      * @return
      */
     List<Tag> tagList();
+
+    /**
+     * 判断用户权限
+     * @return
+     */
+    boolean isAdmin();
+
 }

@@ -117,4 +117,7 @@ public class User implements Serializable {
 
     // 用户标签
     private String tags;
+
+    // 用户权限
+    private Integer role;
 }

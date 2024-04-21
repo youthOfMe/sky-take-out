@@ -396,4 +396,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         List<Tag> list = tagMapper.selectList(null);
         return list;
     }
+
+    /**
+     * 判断用户是否为管理员
+     * @return
+     */
+    public boolean isAdmin() {
+        Long userId = BaseContext.getCurrentId();
+        User user = userMapper.getById(userId);
+
+        return user != null && user.getRole() == 1;
+    }
 }
