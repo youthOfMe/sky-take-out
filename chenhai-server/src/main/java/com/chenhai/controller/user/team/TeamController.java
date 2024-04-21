@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.chenhai.dto.team.TeamDTO;
 import com.chenhai.dto.team.TeamJoinDTO;
 import com.chenhai.dto.team.TeamQueryDTO;
+import com.chenhai.dto.team.TeamQuitDTO;
 import com.chenhai.entity.User;
 import com.chenhai.entity.team.Team;
 import com.chenhai.entity.team.UserTeam;
@@ -53,6 +54,18 @@ public class TeamController {
         return Result.success(teamId);
     }
 
+    @GetMapping("/get")
+    public Result<Team> getTeamById(long id) {
+        if (id <= 0) {
+            throw new BaseException("参数错误");
+        }
+        Team team = teamService.getById(id);
+        if (team == null) {
+            throw new BaseException("队伍为空");
+        }
+        return Result.success(team);
+    }
+
     @GetMapping("/list")
     public Result<List<TeamUserVO>> listTeams(TeamQueryDTO teamQuery) {
         if (teamQuery == null) {
@@ -97,6 +110,16 @@ public class TeamController {
         }
         User loginUser = userService.getLoginUser();
         boolean result = teamService.joinTeam(teamJoinRequest, loginUser);
+        return Result.success(result);
+    }
+
+    @PostMapping("/quit")
+    public Result<Boolean> quitTeam(@RequestBody TeamQuitDTO teamQuitRequest) {
+        if (teamQuitRequest == null) {
+            throw new BaseException("参数错误");
+        }
+        User loginUser = userService.getLoginUser();
+        boolean result = teamService.quitTeam(teamQuitRequest, loginUser);
         return Result.success(result);
     }
 

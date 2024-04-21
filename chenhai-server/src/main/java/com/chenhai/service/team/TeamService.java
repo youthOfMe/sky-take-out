@@ -3,6 +3,7 @@ package com.chenhai.service.team;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chenhai.dto.team.TeamJoinDTO;
 import com.chenhai.dto.team.TeamQueryDTO;
+import com.chenhai.dto.team.TeamQuitDTO;
 import com.chenhai.entity.User;
 import com.chenhai.entity.team.Team;
 import com.chenhai.vo.user.TeamUserVO;
@@ -27,4 +28,12 @@ public interface TeamService extends IService<Team> {
     List<TeamUserVO> listTeams(TeamQueryDTO teamQuery, boolean isAdmin);
 
     boolean joinTeam(TeamJoinDTO teamJoinRequest, User loginUser);
+
+    /**
+     * 退出队伍
+     * @param teamQuitRequest
+     * @param loginUser
+     * @return
+     */
+    boolean quitTeam(TeamQuitDTO teamQuitRequest, User loginUser);
 }
