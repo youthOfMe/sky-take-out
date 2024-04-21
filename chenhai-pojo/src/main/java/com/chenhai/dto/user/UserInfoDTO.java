@@ -12,4 +12,8 @@ public class UserInfoDTO implements Serializable {
     private String name;
 
     // 用户头像
+    private String avatar;
+
+    // 修改资料的type
+    private Integer type;
 }

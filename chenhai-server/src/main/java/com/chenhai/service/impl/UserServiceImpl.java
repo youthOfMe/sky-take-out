@@ -255,6 +255,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param userInfoDTO
      */
     public UserInfoVO resetUserInfo(UserInfoDTO userInfoDTO) {
+        if (userInfoDTO.getType() == 1) {
+            if (StringUtils.isBlank(userInfoDTO.getName()) || StringUtils.isEmpty(userInfoDTO.getName())) throw new BaseException("用户昵称不可为空");
+        }
+        if (userInfoDTO.getType() == 2) {
+            if (StringUtils.isBlank(userInfoDTO.getAvatar()) || StringUtils.isEmpty(userInfoDTO.getAvatar())) throw new BaseException("用户头像不可为空");
+        }
         Long userId = BaseContext.getCurrentId();
         User user = new User();
 
@@ -265,6 +271,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         UserInfoVO userInfoVO = new UserInfoVO();
         userInfoVO.setName(userInfoDTO.getName());
+        userInfoVO.setAvatar(userInfoDTO.getAvatar());
 
         return userInfoVO;
 

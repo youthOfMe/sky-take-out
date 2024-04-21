@@ -13,5 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserInfoVO {
-    private String name; // 用户昵称
+    // 用户昵称
+    private String name;
+
+    // 用户头像
+    private String avatar;
 }
