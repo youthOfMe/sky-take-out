@@ -1,10 +1,10 @@
-package com.chenhai.vo.team;
+package com.chenhai.dto.team;
 
 import com.chenhai.vo.user.UserInfoVO;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 队伍和用户信息封装类（脱敏）
@@ -13,7 +13,7 @@ import java.util.Date;
  * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 @Data
-public class TeamUserVO implements Serializable {
+public class TeamUserDTO implements Serializable {
 
     private static final long serialVersionUID = 1899063007109226944L;
 
@@ -40,7 +40,7 @@ public class TeamUserVO implements Serializable {
     /**
      * 过期时间
      */
-    private Date expireTime;
+    private LocalDateTime expireTime;
 
     /**
      * 用户id
@@ -55,12 +55,12 @@ public class TeamUserVO implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 创建人用户信息

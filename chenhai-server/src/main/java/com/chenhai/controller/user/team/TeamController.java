@@ -2,7 +2,9 @@ package com.chenhai.controller.user.team;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.chenhai.dto.team.TeamDTO;
+import com.chenhai.dto.team.TeamJoinDTO;
 import com.chenhai.dto.team.TeamQueryDTO;
+import com.chenhai.dto.team.TeamUserDTO;
 import com.chenhai.entity.User;
 import com.chenhai.entity.team.Team;
 import com.chenhai.entity.team.UserTeam;
@@ -11,9 +13,9 @@ import com.chenhai.result.Result;
 import com.chenhai.service.UserService;
 import com.chenhai.service.team.TeamService;
 import com.chenhai.service.team.UserTeamService;
-import com.chenhai.vo.team.TeamUserVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -52,14 +54,17 @@ public class TeamController {
     }
 
     @GetMapping("/list")
-    public Result<List<TeamUserVO>> listTeams(TeamQueryDTO teamQuery) {
+    public Result<List<TeamUserDTO>> listTeams(TeamQueryDTO teamQuery) {
         if (teamQuery == null) {
             throw new BaseException("参数错误");
         }
         boolean isAdmin = userService.isAdmin();
         // 1、查询队伍列表
-        List<TeamUserVO> teamList = teamService.listTeams(teamQuery, isAdmin);
-        final List<Long> teamIdList = teamList.stream().map(TeamUserVO::getId).collect(Collectors.toList());
+        List<TeamUserDTO> teamList = teamService.listTeams(teamQuery, isAdmin);
+        if (CollectionUtils.isEmpty(teamList)) {
+            return Result.success(new ArrayList<>());
+        }
+        final List<Long> teamIdList = teamList.stream().map(TeamUserDTO::getId).collect(Collectors.toList());
         // 2、判断当前用户是否已加入队伍
         QueryWrapper<UserTeam> userTeamQueryWrapper = new QueryWrapper<>();
         try {
@@ -82,6 +87,33 @@ public class TeamController {
         // 队伍 id => 加入这个队伍的用户列表
         Map<Long, List<UserTeam>> teamIdUserTeamList = userTeamList.stream().collect(Collectors.groupingBy(UserTeam::getTeamId));
         teamList.forEach(team -> team.setHasJoinNum(teamIdUserTeamList.getOrDefault(team.getId(), new ArrayList<>()).size()));
+        return Result.success(teamList);
+    }
+
+    @PostMapping("/join")
+    public Result<Boolean> joinTeam(@RequestBody TeamJoinDTO teamJoinRequest) {
+        if (teamJoinRequest == null) {
+            throw new BaseException("参数异常");
+        }
+        User loginUser = userService.getLoginUser();
+        boolean result = teamService.joinTeam(teamJoinRequest, loginUser);
+        return Result.success(result);
+    }
+
+    /**
+     * 获取我创建的队伍
+     *
+     * @param teamQuery
+     * @return
+     */
+    @GetMapping("/list/my/create")
+    public Result<List<TeamUserDTO>> listMyCreateTeams(TeamQueryDTO teamQuery) {
+        if (teamQuery == null) {
+            throw new BaseException("参数错误");
+        }
+        User loginUser = userService.getLoginUser();
+        teamQuery.setUserId(loginUser.getId());
+        List<TeamUserDTO> teamList = teamService.listTeams(teamQuery, true);
         return Result.success(teamList);
     }
 }
