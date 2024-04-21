@@ -15,9 +15,11 @@ import com.sky.dto.UserLoginDTO;
 import com.sky.dto.UserRegisterDTO;
 import com.sky.dto.user.UserInfoDTO;
 import com.sky.dto.user.UserPageQueryDTO;
+import com.sky.entity.Tag;
 import com.sky.entity.User;
 import com.sky.exception.*;
 import com.sky.mapper.UserMapper;
+import com.sky.mapper.tag.TagMapper;
 import com.sky.properties.WeChatProperties;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
@@ -53,6 +55,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private TagMapper tagMapper;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -374,5 +379,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             finalUserList.add(userIdUserListMap.get(userId).get(0));
         }
         return finalUserList;
+    }
+
+    /**
+     * 获取所有的标签
+     * @return
+     */
+    public List<Tag> tagList() {
+        List<Tag> list = tagMapper.selectList(null);
+        return list;
     }
 }

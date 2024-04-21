@@ -5,6 +5,7 @@ import com.sky.dto.UserLoginDTO;
 import com.sky.dto.UserRegisterDTO;
 import com.sky.dto.user.UserInfoDTO;
 import com.sky.dto.user.UserPageQueryDTO;
+import com.sky.entity.Tag;
 import com.sky.entity.User;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
@@ -84,4 +85,10 @@ public interface UserService {
      * @return
      */
     List<User> matchUsers(long num, User user);
+
+    /**
+     * 获取所有的标签
+     * @return
+     */
+    List<Tag> tagList();
 }

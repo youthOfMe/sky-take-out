@@ -6,6 +6,7 @@ import com.sky.dto.UserAccountOrPhoneLoginDTO;
 import com.sky.dto.UserRegisterDTO;
 import com.sky.dto.user.UserInfoDTO;
 import com.sky.dto.user.UserPageQueryDTO;
+import com.sky.entity.Tag;
 import com.sky.entity.User;
 import com.sky.exception.BaseException;
 import com.sky.properties.JwtProperties;
@@ -210,6 +211,17 @@ public class UserController {
         }
         List<User> userList = userService.searchUsersByTags(tagNameList);
         return Result.success(userList);
+    }
+
+    /**
+     * 获取所有的标签
+     * @return
+     */
+    @GetMapping("/tags")
+    @ApiOperation("获取所有的tag")
+    public Result<List<Tag>> tagList() {
+        List<Tag> list = userService.tagList();
+        return Result.success(list);
     }
 
     /**

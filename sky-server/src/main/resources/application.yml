@@ -73,7 +73,7 @@ sky:
 mybatis-plus:
   global-config:
     db-config:
-      id-type: assign_id   # 雪花算法生成ID
+      id-type: auto   # 雪花算法生成ID
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
