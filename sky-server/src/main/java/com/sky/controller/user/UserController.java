@@ -45,8 +45,8 @@ public class UserController {
 
     @Autowired
     private JwtUtil jwtUtil;
-    @Autowired
 
+    @Autowired
     private JwtUtils jwtUtils;
     //token过期时间
     private static final Integer TOKEN_EXPIRE_DAYS = 5;
@@ -210,5 +210,19 @@ public class UserController {
         }
         List<User> userList = userService.searchUsersByTags(tagNameList);
         return Result.success(userList);
+    }
+
+    /**
+     * 匹配
+     * @param num
+     * @return
+     */
+    @GetMapping("/match")
+    public Result<List<User>> matchUsers(long num) {
+        if (num <= 0 || num > 20) {
+            throw new BaseException("");
+        }
+        User user = userService.getLoginUser();
+        return Result.success(userService.matchUsers(num, user));
     }
 }

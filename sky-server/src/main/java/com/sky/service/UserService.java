@@ -41,6 +41,12 @@ public interface UserService {
     Result sendMsg(String mobile) throws Exception;
 
     /**
+     * 获取当前登录用户信息
+     * @return
+     */
+    User getLoginUser();
+
+    /**
      * 获取用户信息
      * @return
      */
@@ -70,4 +76,12 @@ public interface UserService {
      * @return
      */
     List<User> searchUsersByTags(List<String> tagNameList);
+
+    /**
+     * 匹配算法
+     * @param num
+     * @param user
+     * @return
+     */
+    List<User> matchUsers(long num, User user);
 }

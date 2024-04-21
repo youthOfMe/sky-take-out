@@ -3,6 +3,7 @@ package com.sky.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.gson.Gson;
@@ -21,12 +22,14 @@ import com.sky.properties.WeChatProperties;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.UserService;
+import com.sky.utils.AlgorithmUtils;
 import com.sky.utils.AliSmsUtil;
 import com.sky.utils.HttpClientUtil;
 import com.sky.vo.user.UserInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.math3.util.Pair;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -40,7 +43,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     // 微信服务接口地址
     public  static final String WX_LOGIN = "https://api.weixin.qq.com/sns/jscode2session";
@@ -214,6 +217,17 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 获取当前登录用户信息
+     * @return
+     */
+    public User getLoginUser() {
+        Long userId = BaseContext.getCurrentId();
+        User user = userMapper.selectById(userId);
+
+        return user;
+    }
+
+    /**
      * 获取用户信息
      * @return
      */
@@ -308,4 +322,57 @@ public class UserServiceImpl implements UserService {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * 匹配算法
+     * @param num
+     * @param user
+     * @return
+     */
+    @Override
+    public List<User> matchUsers(long num, User loginUser) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("id", "tags");
+        queryWrapper.isNotNull("tags");
+        List<User> userList = this.list(queryWrapper);
+        String tags = loginUser.getTags();
+        Gson gson = new Gson();
+        List<String> tagList = gson.fromJson(tags, new TypeToken<List<String>>() {
+        }.getType());
+        // 用户列表的下标 => 相似度
+        List<Pair<User, Long>> list = new ArrayList<>();
+        // 依次计算所有用户和当前用户的相似度
+        for (int i = 0; i < userList.size(); i++) {
+            User user = userList.get(i);
+            String userTags = user.getTags();
+            // 无标签或者为当前用户自己
+            if (org.apache.commons.lang3.StringUtils.isBlank(userTags) || user.getId() == loginUser.getId()) {
+                continue;
+            }
+            List<String> userTagList = gson.fromJson(userTags, new TypeToken<List<String>>() {
+            }.getType());
+            // 计算分数
+            long distance = AlgorithmUtils.minDistance(tagList, userTagList);
+            list.add(new Pair<>(user, distance));
+        }
+        // 按编辑距离由小到大排序
+        List<Pair<User, Long>> topUserPairList = list.stream()
+                .sorted((a, b) -> (int) (a.getValue() - b.getValue()))
+                .limit(num)
+                .collect(Collectors.toList());
+        // 原本顺序的 userId 列表
+        List<Long> userIdList = topUserPairList.stream().map(pair -> pair.getKey().getId()).collect(Collectors.toList());
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.in("id", userIdList);
+        // 1, 3, 2
+        // User1、User2、User3
+        // 1 => User1, 2 => User2, 3 => User3
+        Map<Long, List<User>> userIdUserListMap = this.list(userQueryWrapper)
+                .stream()
+                .collect(Collectors.groupingBy(User::getId));
+        List<User> finalUserList = new ArrayList<>();
+        for (Long userId : userIdList) {
+            finalUserList.add(userIdUserListMap.get(userId).get(0));
+        }
+        return finalUserList;
+    }
 }
