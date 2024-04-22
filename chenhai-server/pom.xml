@@ -136,6 +136,13 @@
             <artifactId>redisson</artifactId>
             <version>3.17.5</version>
         </dependency>
+
+        <!--    鱼聪明    -->
+        <dependency>
+            <groupId>com.yucongming</groupId>
+            <artifactId>yucongming-java-sdk</artifactId>
+            <version>0.0.3</version>
+        </dependency>
     </dependencies>
 
     <build>

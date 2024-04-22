@@ -96,5 +96,19 @@
             <artifactId>hutool-all</artifactId>
             <version>5.6.0</version>
         </dependency>
+
+        <!-- https://github.com/alibaba/easyexcel -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+
+        <!--    鱼聪明AI    -->
+        <dependency>
+            <groupId>com.yucongming</groupId>
+            <artifactId>yucongming-java-sdk</artifactId>
+            <version>0.0.2</version>
+        </dependency>
     </dependencies>
 </project>
