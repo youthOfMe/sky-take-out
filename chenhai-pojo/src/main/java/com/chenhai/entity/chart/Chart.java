@@ -67,11 +67,13 @@ public class Chart implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(value = "create_time")
     private Date createTime;
 
     /**
      * 更新时间
      */
+    @TableField(value = "update_time")
     private Date updateTime;
 
     /**

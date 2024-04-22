@@ -1,7 +1,10 @@
 package com.chenhai.controller.user.chart;
 
 import cn.hutool.core.io.FileUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chenhai.constant.CommonConstant;
+import com.chenhai.dto.chart.ChartQueryDTO;
 import com.chenhai.dto.chart.GenChartByAiDTO;
 import com.chenhai.entity.User;
 import com.chenhai.entity.chart.Chart;
@@ -12,16 +15,15 @@ import com.chenhai.result.Result;
 import com.chenhai.service.UserService;
 import com.chenhai.service.chart.ChartService;
 import com.chenhai.utils.ExcelUtils;
+import com.chenhai.utils.SqlUtils;
 import com.chenhai.vo.chart.BiResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -146,5 +148,60 @@ public class ChartController {
         biResponseVO.setGenResult(genResult);
         biResponseVO.setChartId(chart.getId());
         return Result.success(biResponseVO);
+    }
+
+    /**
+     * 分页获取当前用户创建的资源列表
+     *
+     * @param chartQueryRequest
+     * @return
+     */
+    @PostMapping("/my/list/page")
+    @ApiOperation("查询我的图表")
+    public Result<Page<Chart>> listMyChartByPage(@RequestBody ChartQueryDTO chartQueryRequest) {
+        if (chartQueryRequest == null) {
+            throw new BaseException("参数错误");
+        }
+        User loginUser = userService.getLoginUser();
+        chartQueryRequest.setUserId(loginUser.getId());
+        long current = chartQueryRequest.getCurrent();
+        long size = chartQueryRequest.getPageSize();
+        // 限制爬虫
+        if (size > 20) {
+            throw new BaseException("最多允许一次查询二十条数据");
+        }
+        Page<Chart> chartPage = chartService.page(new Page<>(current, size),
+                getQueryWrapper(chartQueryRequest));
+        return Result.success(chartPage);
+    }
+
+    /**
+     * 获取查询包装类
+     *
+     * @param chartQueryRequest
+     * @return
+     */
+    private QueryWrapper<Chart> getQueryWrapper(ChartQueryDTO chartQueryRequest) {
+        QueryWrapper<Chart> queryWrapper = new QueryWrapper<>();
+        if (chartQueryRequest == null) {
+            return queryWrapper;
+        }
+        Long id = chartQueryRequest.getId();
+        String name = chartQueryRequest.getName();
+        String goal = chartQueryRequest.getGoal();
+        String chartType = chartQueryRequest.getChartType();
+        Long userId = chartQueryRequest.getUserId();
+        String sortField = chartQueryRequest.getSortField();
+        String sortOrder = chartQueryRequest.getSortOrder();
+
+        queryWrapper.eq(id != null && id > 0, "id", id);
+        queryWrapper.like(StringUtils.isNotBlank(name), "name", name);
+        queryWrapper.eq(StringUtils.isNotBlank(goal), "goal", goal);
+        queryWrapper.eq(StringUtils.isNotBlank(chartType), "chart_type", chartType);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "user_id", userId);
+        queryWrapper.eq("deleted", false);
+        queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
+                sortField);
+        return queryWrapper;
     }
 }
