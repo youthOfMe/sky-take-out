@@ -1,7 +1,5 @@
 package com.chenhai.service.impl;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.chenhai.constant.MessageConstant;
 import com.chenhai.constant.PasswordConstant;
 import com.chenhai.constant.StatusConstant;
@@ -15,6 +13,8 @@ import com.chenhai.exception.PasswordErrorException;
 import com.chenhai.mapper.EmployeeMapper;
 import com.chenhai.result.PageResult;
 import com.chenhai.service.EmployeeService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -133,5 +133,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employeeMapper.update(employee);
     }
+
+    /**
+     * 获取用户信息
+     * @return
+     */
+    public Employee getUserInfo(Long userId) {
+
+        Employee employee = employeeMapper.getByUserId(userId);
+
+        // 用户数据脱敏
+        employee.setUpdateTime(null);
+        employee.setCreateTime(null);
+        employee.setPassword(null);
+
+        return employee;
+    }
+
 
 }

@@ -1,10 +1,10 @@
 package com.chenhai.mapper;
 
-import com.github.pagehelper.Page;
 import com.chenhai.annotation.AutoFill;
 import com.chenhai.dto.EmployeePageQueryDTO;
 import com.chenhai.entity.Employee;
 import com.chenhai.enumeration.OperationType;
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -19,6 +19,14 @@ public interface EmployeeMapper {
      */
     @Select("select * from employee where username = #{username}")
     Employee getByUsername(String username);
+
+    /**
+     * 根据员工ID查询员工
+     * @param id
+     * @return
+     */
+    @Select("select * from employee where id = #{id}")
+    Employee getByUserId(Long id);
 
     // 插入员工数据
     @Insert("insert into employee (name, username, password, phone, sex, id_number, create_time, update_time, create_user, update_user, status) " +

@@ -1,6 +1,7 @@
 package com.chenhai.controller.admin;
 
 import com.chenhai.constant.JwtClaimsConstant;
+import com.chenhai.context.BaseContext;
 import com.chenhai.dto.EmployeeDTO;
 import com.chenhai.dto.EmployeeLoginDTO;
 import com.chenhai.dto.EmployeePageQueryDTO;
@@ -63,6 +64,20 @@ public class EmployeeController {
                 .build();
 
         return Result.success(employeeLoginVO);
+    }
+
+    /**
+     * 获取用户信息
+     * @return
+     */
+    @GetMapping("/userInfo")
+    @ApiOperation("获取用户信息")
+    public Result<Employee> getInfo() {
+        log.info("获取用户信息");
+        Long userId = BaseContext.getCurrentId();
+        Employee userInfo = employeeService.getUserInfo(userId);
+
+        return Result.success(userInfo);
     }
 
     /**

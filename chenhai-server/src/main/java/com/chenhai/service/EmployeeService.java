@@ -29,4 +29,7 @@ public interface EmployeeService {
 
     // 编辑员工信息
     void update(EmployeeDTO employeeDTO);
+
+    // 获取员工信息
+    Employee getUserInfo(Long userId);
 }
