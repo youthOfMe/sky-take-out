@@ -195,6 +195,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         user = new User();
         BeanUtils.copyProperties(userRegisterDTO, user);
+        // 设置默认头像
+        user.setAvatar("https://chenhai-misty-rain-test.oss-cn-beijing.aliyuncs.com/lsj/5de114f92ea94d0fddb12cfb.jpg_r_720x400x95_80bc8157.jpg");
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
         Integer userId = userMapper.insert(user);
