@@ -1,6 +1,7 @@
 package com.chenhai.service.community.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.chenhai.entity.community.CommunityCategory;
 import com.chenhai.entity.community.CommunityParentCategory;
 import com.chenhai.mapper.community.CategoryMapper;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Service("userCommunityCategoryService")
 @Slf4j
-public class CategoryServiceImpl implements CategoryService {
+public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CommunityCategory> implements CategoryService {
 
     @Autowired
     private CategoryParentMapper categoryParentMapper;

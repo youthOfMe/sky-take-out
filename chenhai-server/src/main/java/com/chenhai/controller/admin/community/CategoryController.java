@@ -1,5 +1,6 @@
 package com.chenhai.controller.admin.community;
 
+import com.chenhai.entity.community.CommunityCategory;
 import com.chenhai.entity.community.CommunityParentCategory;
 import com.chenhai.result.Result;
 import com.chenhai.service.community.CategoryService;
@@ -33,4 +34,19 @@ public class CategoryController {
         List<CommunityParentCategory> list = categoryService.parentCategory();
         return Result.success(list);
     }
+
+    /**
+     * 社区本快查询
+     * @param parentId
+     * @return
+     */
+    @GetMapping("/list")
+    @ApiOperation("板块查询")
+    public Result<List<CommunityCategory>> categoryList(Long parentId, Integer recommended) {
+        log.info("社区板块查询");
+        List<CommunityCategory> list = categoryService.list(null);
+        return Result.success(list);
+    }
+
+
 }
