@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommunityPostCommit {
+public class CommunityCommit {
 
     // id
     private Long id;
