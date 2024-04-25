@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/user/addressBook")
 @Api(tags = "C端地址薄")

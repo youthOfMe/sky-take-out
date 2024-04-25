@@ -1,0 +1,27 @@
+sky:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: 49.232.17.169
+    port: 3306
+    database: chenhai
+    username: root
+    password: 123456
+  alioss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: LTAI5t9rtsgDJPhQCUJsFMHK
+    access-key-secret: E7ppZWhifDhXUzdKRM1I2LNyfZgqVA
+    bucket-name: chenhai-misty-rain-test
+  sms:
+    signName: 辰海烟雨
+    templateCode: SMS_465424205
+    accessKey: LTAI5t9dA3rBYjNab2fWpNoS
+    secret: Lq05E1PduhjsL8kb26hIzJqqQ7yB04
+  redis:
+    host: 49.232.17.169
+    port: 6379
+    password:
+    database: 0
+
+  wechat:
+    appid: wxc45a3e54c5f272af
+    secret: 258a36589f1e3e4bea899905746d136f

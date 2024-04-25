@@ -17,6 +17,8 @@ import java.util.List;
 /**
  * 分类管理
  */
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/admin/category")
 @Api(tags = "分类相关接口")

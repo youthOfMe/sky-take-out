@@ -9,6 +9,7 @@ import com.wechat.pay.contrib.apache.httpclient.util.AesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,7 @@ import java.util.HashMap;
 /**
  * 支付回调相关接口
  */
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/notify")
 @Slf4j

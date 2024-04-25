@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+@CrossOrigin(origins = "*")
 @RestController("userSetmealController")
 @RequestMapping("/user/setmeal")
 @Api(tags = "C端-套餐浏览接口")

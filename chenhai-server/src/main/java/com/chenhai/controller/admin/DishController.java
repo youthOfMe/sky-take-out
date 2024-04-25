@@ -20,6 +20,8 @@ import java.util.Set;
 /**
  * 菜品管理
  */
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/admin/dish")
 @Api(tags = "商品相关接口")

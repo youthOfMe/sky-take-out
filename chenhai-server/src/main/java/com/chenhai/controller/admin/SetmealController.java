@@ -18,6 +18,8 @@ import java.util.List;
 /**
  * 套餐管理
  */
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/admin/setmeal")
 @Api(tags = "套餐相关接口")

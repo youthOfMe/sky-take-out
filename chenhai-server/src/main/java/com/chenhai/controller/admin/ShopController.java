@@ -9,6 +9,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 // 防止类重名报错
+
+@CrossOrigin(origins = "*")
 @RestController("adminShopController")
 @RequestMapping("/admin/shop")
 @Api(tags = "店铺相关的接口")

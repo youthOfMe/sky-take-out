@@ -1,5 +1,6 @@
 package com.chenhai.controller.user.community;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.chenhai.context.BaseContext;
 import com.chenhai.dto.community.CommunityPostCommitDTO;
 import com.chenhai.entity.community.CommunityCommit;
@@ -9,13 +10,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+
+@CrossOrigin(origins = "*")
 @RestController("userCommunityCommitController")
 @RequestMapping("/user/community/commit")
 @Api(tags = "C端社区贴子评论相关接口")
@@ -41,5 +42,19 @@ public class CommitController {
         communityPostCommit.setCreatedTime(LocalDateTime.now());
         commitMapper.insert(communityPostCommit);
         return Result.success();
+    }
+
+    /**
+     * 获取帖子的评论列表
+     * @param postId
+     * @return
+     */
+    @GetMapping("/list")
+    @ApiOperation("获取帖子评论列表")
+    public Result<List<CommunityCommit>> getPostCommitList(Long postId) {
+        QueryWrapper<CommunityCommit> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", postId);
+        List<CommunityCommit> communityCommits = commitMapper.selectList(queryWrapper);
+        return Result.success(communityCommits);
     }
 }

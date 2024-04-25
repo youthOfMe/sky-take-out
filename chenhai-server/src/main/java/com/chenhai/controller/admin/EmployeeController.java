@@ -24,6 +24,8 @@ import java.util.Map;
 /**
  * 员工管理
  */
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j

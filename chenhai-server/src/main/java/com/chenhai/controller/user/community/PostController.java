@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+@CrossOrigin(origins = "*")
 @RestController("userCommunityPostController")
 @RequestMapping("/user/community/post")
 @Api(tags = "C端社区帖子相关接口")

@@ -27,6 +27,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
+@CrossOrigin(origins = "*")
 @RestController("userTeamController")
 @RequestMapping("/user/team")
 @Api(tags = "C端队伍相关接口")

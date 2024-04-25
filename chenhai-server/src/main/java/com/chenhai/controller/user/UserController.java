@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/user/user")
 @Api(tags = "C端用户相关接口")

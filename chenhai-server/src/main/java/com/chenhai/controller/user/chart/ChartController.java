@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/user/chart")
 @Api(tags = "智慧BI生成图表接口")

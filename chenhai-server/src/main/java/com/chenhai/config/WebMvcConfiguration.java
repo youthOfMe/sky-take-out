@@ -1,5 +1,6 @@
 package com.chenhai.config;
 
+import com.chenhai.interceptor.IPInterceptor;
 import com.chenhai.interceptor.JwtTokenAdminInterceptor;
 import com.chenhai.interceptor.JwtTokenUserInterceptor;
 import com.chenhai.json.JacksonObjectMapper;
@@ -34,6 +35,21 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     @Autowired
     private JwtTokenUserInterceptor jwtTokenUserInterceptor;
 
+    @Autowired
+    private IPInterceptor ipInterceptor;
+
+    // @Override
+    // public void addCorsMappings(CorsRegistry registry) {
+    //     registry.addMapping("/**")
+    //             //是否发送Cookie
+    //             .allowCredentials(true)
+    //             //放行哪些原始域
+    //             .allowedOrigins("*")
+    //             .allowedMethods(new String[]{"GET", "POST", "PUT", "DELETE"})
+    //             .allowedHeaders("*")
+    //             .exposedHeaders("*");
+    // }
+
     /**
      * 注册自定义拦截器
      *
@@ -52,6 +68,9 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .excludePathPatterns("/user/user/verifiCode")
                 .excludePathPatterns("/user/shop/status")
                 .excludePathPatterns("/user/ourstory/**");
+
+        // 注册IP拦截器
+        // registry.addInterceptor(ipInterceptor);
     }
 
     /**

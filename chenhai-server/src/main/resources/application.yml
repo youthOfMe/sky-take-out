@@ -2,10 +2,13 @@ server:
   port: 8080
   tomcat:
     max-http-form-post-size: 100MB
+#  servlet:
+#    context-path: /api
+
 
 spring:
   profiles:
-    active: dev
+    active: prod
   main:
     allow-circular-references: true
   datasource:
@@ -19,6 +22,8 @@ spring:
     port: ${sky.redis.port}
     password: ${sky.redis.password}
     database: ${sky.redis.database}
+    # 连接超时时间
+    timeout: 1800000
   # 文件上传限制
   servlet:
     multipart:
