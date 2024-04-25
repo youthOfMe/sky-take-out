@@ -113,7 +113,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (userAccountOrPhoneLoginDTO.getType() == 1 && userAccountOrPhoneLoginDTO.getAccount() == null) {
             throw new AccountNotFoundException("账号不许为空");
         }
-        if (userAccountOrPhoneLoginDTO.getPassword() == null) {
+        if (userAccountOrPhoneLoginDTO.getPassword() == null && userAccountOrPhoneLoginDTO.getType() == 1) {
             throw new PasswordNotFoundException("密码不许为空");
         }
         // 验证是否填写了手机号
@@ -122,7 +122,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         // 验证验证码是否正确
         if (userAccountOrPhoneLoginDTO.getType() == 2) {
-            String key = "CHECK_CODE" + userAccountOrPhoneLoginDTO.getPhone();
+            String key = "CHECK_CODE_" + userAccountOrPhoneLoginDTO.getPhone();
             String value = (String) redisTemplate.opsForValue().get(key);
             if (!StringUtils.equals(value, userAccountOrPhoneLoginDTO.getCode())) {
                 throw new VerifiCodeNotFoundException("验证码输入不正确");
@@ -172,7 +172,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         // 验证验证码是否正确
         if (userRegisterDTO.getType() == 2) {
-            String key = "CHECK_CODE" + userRegisterDTO.getPhone();
+            String key = "CHECK_CODE_" + userRegisterDTO.getPhone();
             String value = (String) redisTemplate.opsForValue().get(key);
             if (!StringUtils.equals(value, userRegisterDTO.getCode())) {
                 throw new VerifiCodeNotFoundException("验证码输入不正确");
@@ -218,7 +218,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Result sendMsg(String mobile) throws Exception {
         // 1. 随机生成6位数字
         String code = RandomStringUtils.randomNumeric(6);
-        String key = "CHECK_CODE" + mobile;
+        String key = "CHECK_CODE_" + mobile;
         String value = (String) redisTemplate.opsForValue().get(key);
         if (value != null) {
             return Result.error("获取验证码太频繁了！！！");
@@ -226,7 +226,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 2. 调用template对象, 发送手机对象
         aliSmsUtil.sendSms(mobile, code);
         // 3. 讲验证码存入到redis
-        redisTemplate.opsForValue().set("CHECK_CODE_" + mobile, code, Duration.ofMinutes(5));
+        redisTemplate.opsForValue().set("CHECK_CODE_" + mobile, code, Duration.ofMinutes(1));
         return Result.success();
     }
 
